@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake del Gatto 🐱</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #fff4e6, #f8e8ff);
+    color: #4a354f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.game-wrapper {
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.3rem;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.box {
+    background: white;
+    padding: 9px 12px;
+    border-radius: 14px;
+    flex: 1;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-weight: bold;
+}
+
+#game {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #fffdf9;
+    border: 5px solid #6f4a73;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.94);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    z-index: 10;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.overlay h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.overlay p {
+    margin-bottom: 18px;
+    line-height: 1.5;
+}
+
+button {
+    border: none;
+    background: #6f4a73;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform .15s, opacity .15s;
+}
+
+button:hover {
+    transform: scale(1.04);
+    opacity: .9;
+}
+
+.controls {
+    margin: 18px auto 0;
+    width: 190px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+}
+
+.controls button {
+    padding: 13px 0;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    touch-action: manipulation;
+}
+
+.empty {
+    visibility: hidden;
+}
+
+.tip {
+    margin-top: 14px;
+    font-size: .82rem;
+    opacity: .7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game-wrapper">
+
+    <h1>🐱 Snake del Gatto</h1>
+    <div class="subtitle">Aiuta il micetto a raccogliere tutti i gomitoli! 🧶</div>
+
+    <div class="info">
+        <div class="box">Punti: <span id="score">0</span></div>
+        <div class="box">Livello: <span id="level">1</span></div>
+        <div class="box">Record: <span id="highscore">0</span></div>
+    </div>
+
+    <div id="game">
+
+        <canvas id="canvas" width="400" height="400"></canvas>
+
+        <div id="overlay" class="overlay">
+            <h2 id="overlayTitle">🐾 Pronto?</h2>
+            <p id="overlayText">
+                Muovi il gattino, raccogli i gomitoli
+                e cerca di non morderti la coda!
+            </p>
+            <button id="startButton">Inizia a giocare</button>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="empty"></button>
+        <button data-direction="up">⬆️</button>
+        <button class="empty"></button>
+
+        <button data-direction="left">⬅️</button>
+        <button data-direction="down">⬇️</button>
+        <button data-direction="right">➡️</button>
+    </div>
+
+    <div class="tip">
+        PC: usa le frecce o WASD · Smartphone: usa i pulsanti
+    </div>
+
+</div>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const scoreElement = document.getElementById("score");
+const levelElement = document.getElementById("level");
+const highscoreElement = document.getElementById("highscore");
+
+const overlay = document.getElementById("overlay");
+const overlayTitle = document.getElementById("overlayTitle");
+const overlayText = document.getElementById("overlayText");
+const startButton = document.getElementById("startButton");
+
+const gridSize = 20;
+const tileSize = canvas.width / gridSize;
+
+let cat;
+let yarn;
+let direction;
+let nextDirection;
+
+let score = 0;
+let level = 1;
+let highscore = Number(localStorage.getItem("snakeCatHighscore")) || 0;
+
+let gameRunning = false;
+let gameLoop = null;
+
+highscoreElement.textContent = highscore;
+
+
+/* =========================
+   INIZIO PARTITA
+========================= */
+
+function startGame() {
+
+    cat = [
+        {x: 10, y: 10},
+        {x: 9, y: 10},
+        {x: 8, y: 10}
+    ];
+
+    direction = {x: 1, y: 0};
+    nextDirection = {x: 1, y: 0};
+
+    score = 0;
+    level = 1;
+
+    updateInfo();
+    createYarn();
+
+    overlay.classList.add("hidden");
+
+    gameRunning = true;
+
+    startLoop();
+}
+
+
+/* =========================
+   VELOCITÀ LIVELLI
+========================= */
+
+function getSpeed() {
+
+    const baseSpeed = 180;
+    const decrease = (level - 1) * 18;
+
+    return Math.max(65, baseSpeed - decrease);
+}
+
+
+function startLoop() {
+
+    clearInterval(gameLoop);
+
+    gameLoop = setInterval(updateGame, getSpeed());
+}
+
+
+/* =========================
+   AGGIORNAMENTO
+========================= */
+
+function updateGame() {
+
+    if (!gameRunning) return;
+
+    direction = nextDirection;
+
+    const head = {
+        x: cat[0].x + direction.x,
+        y: cat[0].y + direction.y
+    };
+
+    if (checkCollision(head)) {
+        endGame();
+        return;
+    }
+
+    cat.unshift(head);
+
+    if (head.x === yarn.x && head.y === yarn.y) {
+
+        score++;
+
+        updateLevel();
+
+        createYarn();
+
+    } else {
+
+        cat.pop();
+
+    }
+
+    draw();
+}
+
+
+/* =========================
+   COLLISIONI
+========================= */
+
+function checkCollision(head) {
+
+    // Pareti
+    if (
+        head.x < 0 ||
+        head.x >= gridSize ||
+        head.y < 0 ||
+        head.y >= gridSize
+    ) {
+        return true;
+    }
+
+    // Corpo
+    for (let i = 0; i < cat.length; i++) {
+
+        if (
+            head.x === cat[i].x &&
+            head.y === cat[i].y
+        ) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+/* =========================
+   GOMITOLO
+========================= */
+
+function createYarn() {
+
+    let validPosition = false;
+
+    while (!validPosition) {
+
+        yarn = {
+            x: Math.floor(Math.random() * gridSize),
+            y: Math.floor(Math.random() * gridSize)
+        };
+
+        validPosition = !cat.some(
+            part =>
+                part.x === yarn.x &&
+                part.y === yarn.y
+        );
+    }
+}
+
+
+/* =========================
+   LIVELLI
+========================= */
+
+function updateLevel() {
+
+    const newLevel = Math.floor(score / 5) + 1;
+
+    if (newLevel !== level) {
+
+        level = newLevel;
+
+        startLoop();
+
+    }
+
+    updateInfo();
+}
+
+
+/* =========================
+   DISEGNO
+========================= */
+
+function draw() {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawBackground();
+    drawYarn();
+    drawCat();
+
+}
+
+
+/* =========================
+   SFONDO
+========================= */
+
+function drawBackground() {
+
+    ctx.fillStyle = "#fffdf9";
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.strokeStyle = "#f1e6ee";
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i <= gridSize; i++) {
+
+        ctx.beginPath();
+
+        ctx.moveTo(i * tileSize, 0);
+        ctx.lineTo(i * tileSize, canvas.height);
+
+        ctx.stroke();
+
+        ctx.beginPath();
+
+        ctx.moveTo(0, i * tileSize);
+        ctx.lineTo(canvas.width, i * tileSize);
+
+        ctx.stroke();
+    }
+}
+
+
+/* =========================
+   GOMITOLO DI LANA
+========================= */
+
+function drawYarn() {
+
+    const x = yarn.x * tileSize + tileSize / 2;
+    const y = yarn.y * tileSize + tileSize / 2;
+
+    ctx.font = `${tileSize * 0.85}px Arial`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.fillText("🧶", x, y);
+}
+
+
+/* =========================
+   GATTO
+========================= */
+
+function drawCat() {
+
+    cat.forEach((part, index) => {
+
+        const x = part.x * tileSize;
+        const y = part.y * tileSize;
+
+        if (index === 0) {
+
+            drawCatHead(x, y);
+
+        } else {
+
+            drawCatBody(x, y);
+
+        }
+
+    });
+}
+
+
+function drawCatHead(x, y) {
+
+    ctx.fillStyle = "#d79b72";
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        x + 2,
+        y + 2,
+        tileSize - 4,
+        tileSize - 4,
+        7
+    );
+
+    ctx.fill();
+
+    // Orecchie
+    ctx.fillStyle = "#b97858";
+
+    ctx.beginPath();
+    ctx.moveTo(x + 3, y + 7);
+    ctx.lineTo(x + 7, y + 1);
+    ctx.lineTo(x + 12, y + 7);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x + 13, y + 7);
+    ctx.lineTo(x + 18, y + 1);
+    ctx.lineTo(x + 17, y + 8);
+    ctx.fill();
+
+    // Occhi
+    ctx.fillStyle = "#3d2938";
+
+    ctx.beginPath();
+    ctx.arc(
+        x + 7,
+        y + 9,
+        1.5,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(
+        x + 14,
+        y + 9,
+        1.5,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    // Naso
+    ctx.fillStyle = "#8c5364";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x + tileSize / 2,
+        y + 12
+    );
+
+    ctx.lineTo(
+        x + tileSize / 2 - 2,
+        y + 14
+    );
+
+    ctx.lineTo(
+        x + tileSize / 2 + 2,
+        y + 14
+    );
+
+    ctx.fill();
+}
+
+
+function drawCatBody(x, y) {
+
+    ctx.fillStyle = "#d79b72";
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        x + 3,
+        y + 3,
+        tileSize - 6,
+        tileSize - 6,
+        6
+    );
+
+    ctx.fill();
+
+    // macchiolina
+    ctx.fillStyle = "#b97858";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x + 10,
+        y + 10,
+        3,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+}
+
+
+/* =========================
+   FINE PARTITA
+========================= */
+
+function endGame() {
+
+    gameRunning = false;
+
+    clearInterval(gameLoop);
+
+    if (score > highscore) {
+
+        highscore = score;
+
+        localStorage.setItem(
+            "snakeCatHighscore",
+            highscore
+        );
+    }
+
+    updateInfo();
+
+    overlayTitle.textContent = "😿 Game Over!";
+    overlayText.innerHTML =
+        `Hai fatto <strong>${score}</strong> punti!<br>
+         Sei arrivata al livello <strong>${level}</strong>.`;
+
+    startButton.textContent = "🔄 Riprova";
+
+    overlay.classList.remove("hidden");
+}
+
+
+/* =========================
+   CONTROLLI
+========================= */
+
+function changeDirection(newDirection) {
+
+    if (!gameRunning) return;
+
+    const opposite =
+        direction.x === -newDirection.x &&
+        direction.y === -newDirection.y;
+
+    if (opposite) return;
+
+    nextDirection = newDirection;
+}
+
+
+document.addEventListener("keydown", function(event) {
+
+    const key = event.key.toLowerCase();
+
+    if (
+        key === "arrowup" ||
+        key === "w"
+    ) {
+        changeDirection({x: 0, y: -1});
+    }
+
+    if (
+        key === "arrowdown" ||
+        key === "s"
+    ) {
+        changeDirection({x: 0, y: 1});
+    }
+
+    if (
+        key === "arrowleft" ||
+        key === "a"
+    ) {
+        changeDirection({x: -1, y: 0});
+    }
+
+    if (
+        key === "arrowright" ||
+        key === "d"
+    ) {
+        changeDirection({x: 1, y: 0});
+    }
+
+});
+
+
+document.querySelectorAll(
+    ".controls button[data-direction]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        function() {
+
+            const d = this.dataset.direction;
+
+            if (d === "up")
+                changeDirection({x: 0, y: -1});
+
+            if (d === "down")
+                changeDirection({x: 0, y: 1});
+
+            if (d === "left")
+                changeDirection({x: -1, y: 0});
+
+            if (d === "right")
+                changeDirection({x: 1, y: 0});
+
+        }
+    );
+
+});
+
+
+/* =========================
+   INFO
+========================= */
+
+function updateInfo() {
+
+    scoreElement.textContent = score;
+    levelElement.textContent = level;
+    highscoreElement.textContent = highscore;
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+draw();
+
+</script>
+
+</body>
+  </html>
