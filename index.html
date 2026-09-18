@@ -12,11 +12,26 @@
     padding: 0;
 }
 
+:root {
+    --paper: #fffaf1;
+    --paper-light: #fffdf8;
+    --cream: #f6ead8;
+    --beige: #ead7bb;
+    --brown: #5a3a2b;
+    --dark-brown: #3d2921;
+    --ink: #67483a;
+    --rose: #c98f87;
+    --sage: #9aaf91;
+    --gold: #c8a15a;
+}
+
 body {
     min-height: 100vh;
     font-family: 'Georgia', serif;
-    background: linear-gradient(135deg, #f5e6d3, #e8d5b7);
-    color: #3e2723;
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,.7), transparent 35%),
+        linear-gradient(135deg, #f4e4cf, #e7d2b5);
+    color: var(--dark-brown);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,62 +40,112 @@ body {
 
 .game-wrapper {
     width: 100%;
-    max-width: 520px;
+    max-width: 540px;
     text-align: center;
 }
 
+/* =========================
+   TITOLO
+========================= */
+
+.title-decoration {
+    font-size: 1.3rem;
+    letter-spacing: 5px;
+    opacity: .65;
+    margin-bottom: 3px;
+}
+
 h1 {
-    font-size: 2.2rem;
-    margin-bottom: 5px;
-    color: #4a2c11;
+    font-size: clamp(2rem, 7vw, 2.65rem);
+    margin-bottom: 4px;
+    color: var(--dark-brown);
+    text-shadow: 1px 2px 0 rgba(255,255,255,.5);
 }
 
 .subtitle {
-    margin-bottom: 15px;
-    font-size: 0.95rem;
+    margin-bottom: 17px;
+    font-size: .95rem;
     font-style: italic;
-    opacity: 0.85;
+    color: #76584a;
 }
 
+/* =========================
+   PAROLA
+========================= */
+
+.word-box {
+    position: relative;
+    background:
+        linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.35)),
+        var(--paper);
+    color: var(--brown);
+    padding: 14px 15px 13px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    border: 1px solid #ddc9a9;
+    box-shadow:
+        0 5px 15px rgba(77,48,31,.10),
+        inset 0 0 0 2px rgba(255,255,255,.55);
+}
+
+.word-label {
+    display: block;
+    font-size: .7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: .65;
+    margin-bottom: 5px;
+}
+
+#wordDisplay {
+    font-size: 1.35rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+/* =========================
+   INFO
+========================= */
+
 .info {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+    margin-bottom: 12px;
 }
 
 .box {
-    background: #fff9f0;
-    padding: 9px 12px;
-    border-radius: 12px;
-    flex: 1;
-    border: 1px solid #d7ccc8;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    font-weight: bold;
-    font-size: 0.9rem;
+    background: rgba(255,250,241,.88);
+    padding: 9px 5px;
+    border-radius: 13px;
+    border: 1px solid #ddcdb8;
+    box-shadow: 0 3px 9px rgba(0,0,0,.06);
+    font-size: .73rem;
+    color: #76584a;
 }
 
-.word-box {
-    background: #5d4037;
-    color: #fff8e1;
-    padding: 12px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    font-size: 1.2rem;
-    letter-spacing: 3px;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.box strong {
+    display: block;
+    font-size: 1.05rem;
+    color: var(--dark-brown);
+    margin-top: 2px;
 }
+
+/* =========================
+   AREA GIOCO
+========================= */
 
 #game {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    background: #fffdf9;
-    border: 5px solid #4a2c11;
-    border-radius: 15px;
+    background: var(--paper);
+    border: 5px solid var(--dark-brown);
+    border-radius: 21px;
     overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    box-shadow:
+        0 12px 30px rgba(61,41,33,.18),
+        0 2px 0 rgba(255,255,255,.8) inset;
 }
 
 canvas {
@@ -89,16 +154,40 @@ canvas {
     display: block;
 }
 
+/* =========================
+   OVERLAY
+========================= */
+
 .overlay {
     position: absolute;
     inset: 0;
-    background: rgba(255, 248, 235, 0.95);
+    background:
+        radial-gradient(circle at center, rgba(255,255,255,.96), rgba(250,239,218,.97));
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 25px;
+    padding: 28px;
     z-index: 10;
+}
+
+.overlay::before,
+.overlay::after {
+    content: "✦";
+    position: absolute;
+    color: var(--gold);
+    opacity: .55;
+    font-size: 1.5rem;
+}
+
+.overlay::before {
+    top: 25px;
+    left: 30px;
+}
+
+.overlay::after {
+    bottom: 25px;
+    right: 30px;
 }
 
 .overlay.hidden {
@@ -106,46 +195,78 @@ canvas {
 }
 
 .overlay h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: #4a2c11;
+    font-size: clamp(1.65rem, 7vw, 2.15rem);
+    margin-bottom: 12px;
+    color: var(--dark-brown);
 }
 
 .overlay p {
-    margin-bottom: 18px;
-    line-height: 1.5;
+    margin-bottom: 20px;
+    line-height: 1.55;
+    max-width: 370px;
+    color: #6d5144;
 }
+
+.overlay .small-result {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 7px 13px;
+    background: rgba(200,161,90,.12);
+    border-radius: 12px;
+}
+
+/* =========================
+   BOTTONI
+========================= */
 
 button {
     border: none;
-    background: #5d4037;
-    color: #fff8e1;
-    padding: 12px 22px;
-    border-radius: 20px;
+    background: linear-gradient(135deg, #68493a, #4f352a);
+    color: #fff8e9;
+    padding: 12px 23px;
+    border-radius: 22px;
+    font-family: Georgia, serif;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: transform .15s, background-color .15s;
+    box-shadow: 0 5px 12px rgba(67,43,33,.18);
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        background .15s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button:hover {
-    transform: scale(1.04);
-    background: #4a2c11;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 15px rgba(67,43,33,.23);
+}
+
+button:active {
+    transform: translateY(1px) scale(.98);
 }
 
 .controls {
-    margin: 15px auto 0;
-    width: 190px;
+    margin: 16px auto 0;
+    width: min(205px, 65vw);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 7px;
 }
 
 .controls button {
-    padding: 12px 0;
-    border-radius: 10px;
-    font-size: 1.2rem;
+    padding: 11px 0;
+    border-radius: 13px;
+    font-size: 1.15rem;
+    background: rgba(255,250,241,.9);
+    color: var(--brown);
+    border: 1px solid #d9c5aa;
+    box-shadow: 0 3px 8px rgba(0,0,0,.07);
     touch-action: manipulation;
+}
+
+.controls button:hover {
+    background: #fffdf8;
 }
 
 .empty {
@@ -154,8 +275,46 @@ button:hover {
 
 .tip {
     margin-top: 12px;
-    font-size: .8rem;
-    opacity: .75;
+    font-size: .76rem;
+    color: #765d50;
+    opacity: .8;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 450px) {
+    body {
+        padding: 12px;
+    }
+
+    .subtitle {
+        font-size: .84rem;
+        margin-bottom: 12px;
+    }
+
+    .info {
+        gap: 5px;
+    }
+
+    .box {
+        padding: 8px 3px;
+        font-size: .66rem;
+    }
+
+    .box strong {
+        font-size: .95rem;
+    }
+
+    #wordDisplay {
+        font-size: 1.15rem;
+        letter-spacing: 4px;
+    }
+
+    #game {
+        border-width: 4px;
+    }
 }
 </style>
 </head>
@@ -164,42 +323,78 @@ button:hover {
 
 <div class="game-wrapper">
 
+    <div class="title-decoration">✦ ✧ ✦</div>
+
     <h1>📜 Snake Letterario</h1>
-    <div class="subtitle">Guida lo snake e componi le parole lettera per lettera!</div>
+
+    <div class="subtitle">
+        Ricomponi la parola, una lettera alla volta.
+    </div>
 
     <div class="word-box">
-        PAROLA: <span id="wordDisplay">L _ _ _ _</span>
+        <span class="word-label">Parola da ricomporre</span>
+        <span id="wordDisplay">_ _ _ _</span>
     </div>
 
     <div class="info">
-        <div class="box">Punti: <span id="score">0</span></div>
-        <div class="box">Parole: <span id="completedWords">0</span></div>
-        <div class="box">Record: <span id="highscore">0</span></div>
+        <div class="box">
+            Punti
+            <strong id="score">0</strong>
+        </div>
+
+        <div class="box">
+            Parole
+            <strong id="completedWords">0</strong>
+        </div>
+
+        <div class="box">
+            Livello
+            <strong id="level">1</strong>
+        </div>
+
+        <div class="box">
+            Record
+            <strong id="highscore">0</strong>
+        </div>
     </div>
 
     <div id="game">
 
-        <canvas id="canvas" width="400" height="400"></canvas>
+        <canvas id="canvas" width="400" height="400">
+            Snake Letterario: guida lo snake e raccogli le lettere per comporre la parola.
+        </canvas>
 
         <div id="overlay" class="overlay">
+
             <h2 id="overlayTitle">📖 Pronto a Scrivere?</h2>
+
             <p id="overlayText">
-                Cattura le lettere giuste in sequenza per ricomporre la parola target.<br>
-                Attento a non prendere le lettere sbagliate o a battere sui muri!
+                Cattura le lettere giuste in sequenza per ricomporre
+                la parola target.<br><br>
+                Ma attenzione: le altre lettere sono distrattori!
+                E i muri non perdonano.
             </p>
-            <button id="startButton">Inizia la Lettura</button>
+
+            <button id="startButton">✦ Inizia la Lettura</button>
+
         </div>
 
     </div>
 
     <div class="controls">
-        <button class="empty"></button>
-        <button data-direction="up">⬆️</button>
-        <button class="empty"></button>
 
-        <button data-direction="left">⬅️</button>
-        <button data-direction="down">⬇️</button>
-        <button data-direction="right">➡️</button>
+        <button class="empty" aria-hidden="true"></button>
+
+        <button data-direction="up" aria-label="Su">⬆️</button>
+
+        <button class="empty" aria-hidden="true"></button>
+
+        <button data-direction="left" aria-label="Sinistra">⬅️</button>
+
+        <button data-direction="down" aria-label="Giù">⬇️</button>
+
+        <button data-direction="right" aria-label="Destra">➡️</button>
+
     </div>
 
     <div class="tip">
@@ -216,6 +411,7 @@ const ctx = canvas.getContext("2d");
 const scoreElement = document.getElementById("score");
 const completedWordsElement = document.getElementById("completedWords");
 const highscoreElement = document.getElementById("highscore");
+const levelElement = document.getElementById("level");
 const wordDisplay = document.getElementById("wordDisplay");
 
 const overlay = document.getElementById("overlay");
@@ -226,20 +422,41 @@ const startButton = document.getElementById("startButton");
 const gridSize = 20;
 const tileSize = canvas.width / gridSize;
 
-// Lista parole
-const wordList = ["LIBRO", "STORIA", "SCRITTURA", "ROMANZO", "PAGINA", "LEGGERE", "POESIA"];
+/* =========================
+   PAROLE
+========================= */
+
+const wordList = [
+    "LIBRO",
+    "STORIA",
+    "SCRITTURA",
+    "ROMANZO",
+    "PAGINA",
+    "LEGGERE",
+    "POESIA"
+];
+
 let currentWordIndex = 0;
 let targetWord = "";
 let currentLetterIndex = 0;
 
-let snake;
-let activeLetters = []; // Contiene sia la lettera corretta che quelle sbagliate (distrattori)
-let direction;
-let nextDirection;
+/* =========================
+   GAME STATE
+========================= */
+
+let snake = [];
+let activeLetters = [];
+
+let direction = {x: 1, y: 0};
+let nextDirection = {x: 1, y: 0};
 
 let score = 0;
 let completedWordsCount = 0;
-let highscore = Number(localStorage.getItem("snakeLetterarioHighscore")) || 0;
+let highscore = Number(
+    localStorage.getItem("snakeLetterarioHighscore")
+) || 0;
+
+let level = 1;
 
 let gameRunning = false;
 let isPaused = false;
@@ -248,10 +465,28 @@ let gameLoop = null;
 highscoreElement.textContent = highscore;
 
 /* =========================
+   LIVELLI
+========================= */
+
+function getGameSpeed() {
+
+    /*
+       Più alto è il livello,
+       più piccolo è l'intervallo
+       e quindi più veloce è lo snake.
+    */
+
+    return Math.max(75, 150 - ((level - 1) * 10));
+}
+
+/* =========================
    INIZIO PARTITA
 ========================= */
 
 function startGame() {
+
+    clearInterval(gameLoop);
+
     snake = [
         {x: 10, y: 10},
         {x: 9, y: 10},
@@ -264,33 +499,57 @@ function startGame() {
     score = 0;
     completedWordsCount = 0;
     currentWordIndex = 0;
+    currentLetterIndex = 0;
+    level = 1;
+
     isPaused = false;
+    gameRunning = true;
 
     setupWord();
     updateInfo();
 
     overlay.classList.add("hidden");
-    gameRunning = true;
+
+    draw();
     startLoop();
 }
 
+/* =========================
+   PAROLA
+========================= */
+
 function setupWord() {
-    targetWord = wordList[currentWordIndex % wordList.length];
+
+    targetWord =
+        wordList[currentWordIndex % wordList.length];
+
     currentLetterIndex = 0;
+
     updateWordDisplay();
     spawnLetters();
 }
 
 function updateWordDisplay() {
+
     let display = "";
+
     for (let i = 0; i < targetWord.length; i++) {
+
         if (i < currentLetterIndex) {
-            display += targetWord[i] + " ";
+
+            display += targetWord[i];
+
         } else {
-            display += "_ ";
+
+            display += "_";
+        }
+
+        if (i < targetWord.length - 1) {
+            display += " ";
         }
     }
-    wordDisplay.textContent = display.trim();
+
+    wordDisplay.textContent = display;
 }
 
 /* =========================
@@ -298,11 +557,19 @@ function updateWordDisplay() {
 ========================= */
 
 function spawnLetters() {
+
     activeLetters = [];
-    const correctLetter = targetWord[currentLetterIndex];
-    
-    // Genera la lettera corretta
-    const correctPos = getRandomFreePosition();
+
+    const correctLetter =
+        targetWord[currentLetterIndex];
+
+    /*
+       Lettera corretta
+    */
+
+    const correctPos =
+        getRandomFreePosition();
+
     activeLetters.push({
         char: correctLetter,
         x: correctPos.x,
@@ -310,17 +577,33 @@ function spawnLetters() {
         isCorrect: true
     });
 
-    // Genera 2 o 3 distrattori (lettere casuali)
+    /*
+       Distrattori
+    */
+
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numDistractors = 2;
+
+    const numDistractors =
+        level >= 4 ? 3 : 2;
 
     for (let i = 0; i < numDistractors; i++) {
+
         let randomChar;
+
         do {
-            randomChar = alphabet[Math.floor(Math.random() * alphabet.length)];
+
+            randomChar =
+                alphabet[
+                    Math.floor(
+                        Math.random() * alphabet.length
+                    )
+                ];
+
         } while (randomChar === correctLetter);
 
-        const pos = getRandomFreePosition();
+        const pos =
+            getRandomFreePosition();
+
         activeLetters.push({
             char: randomChar,
             x: pos.x,
@@ -331,22 +614,44 @@ function spawnLetters() {
 }
 
 function getRandomFreePosition() {
+
     let pos;
     let collision;
+
     do {
+
         collision = false;
+
         pos = {
             x: Math.floor(Math.random() * gridSize),
             y: Math.floor(Math.random() * gridSize)
         };
 
-        // Evita snake
-        if (snake.some(part => part.x === pos.x && part.y === pos.y)) {
+        /*
+           Evita lo snake
+        */
+
+        if (
+            snake.some(
+                part =>
+                    part.x === pos.x &&
+                    part.y === pos.y
+            )
+        ) {
             collision = true;
         }
 
-        // Evita altre lettere già piazzate
-        if (activeLetters.some(l => l.x === pos.x && l.y === pos.y)) {
+        /*
+           Evita altre lettere
+        */
+
+        if (
+            activeLetters.some(
+                letter =>
+                    letter.x === pos.x &&
+                    letter.y === pos.y
+            )
+        ) {
             collision = true;
         }
 
@@ -356,16 +661,34 @@ function getRandomFreePosition() {
 }
 
 /* =========================
-   GAME LOOP E AGGIORNAMENTO
+   GAME LOOP
 ========================= */
 
 function startLoop() {
+
     clearInterval(gameLoop);
-    gameLoop = setInterval(updateGame, 150);
+
+    gameLoop = setInterval(
+        updateGame,
+        getGameSpeed()
+    );
+}
+
+function restartLoopForLevel() {
+
+    clearInterval(gameLoop);
+
+    gameLoop = setInterval(
+        updateGame,
+        getGameSpeed()
+    );
 }
 
 function updateGame() {
-    if (!gameRunning || isPaused) return;
+
+    if (!gameRunning || isPaused) {
+        return;
+    }
 
     direction = nextDirection;
 
@@ -375,58 +698,142 @@ function updateGame() {
     };
 
     if (checkCollision(head)) {
-        endGame("Hai urtato un ostacolo!");
+
+        endGame(
+            "La tua penna ha incontrato un ostacolo!"
+        );
+
         return;
     }
 
     snake.unshift(head);
 
-    // Controllo se raccoglie una lettera
-    const eatenIndex = activeLetters.findIndex(l => l.x === head.x && l.y === head.y);
+    /*
+       Controllo lettere
+    */
+
+    const eatenIndex =
+        activeLetters.findIndex(
+            letter =>
+                letter.x === head.x &&
+                letter.y === head.y
+        );
 
     if (eatenIndex !== -1) {
-        const eaten = activeLetters[eatenIndex];
+
+        const eaten =
+            activeLetters[eatenIndex];
+
+        /*
+           LETTERA CORRETTA
+        */
 
         if (eaten.isCorrect) {
-            // Lettera corretta
+
             score += 10;
+
             currentLetterIndex++;
 
-            if (currentLetterIndex >= targetWord.length) {
-                // Parola completata
+            /*
+               Parola completata
+            */
+
+            if (
+                currentLetterIndex >=
+                targetWord.length
+            ) {
+
                 score += 50;
                 completedWordsCount++;
+
+                /*
+                   Ogni due parole aumenta il livello.
+                */
+
+                level =
+                    Math.floor(
+                        completedWordsCount / 2
+                    ) + 1;
+
                 currentWordIndex++;
+
+                showWordCompleted();
+
                 setupWord();
+
+                restartLoopForLevel();
+
             } else {
+
                 updateWordDisplay();
                 spawnLetters();
             }
-        } else {
-            // Lettera sbagliata: fine partita
-            endGame(`Hai preso la lettera sbagliata ('${eaten.char}')! Serviva '${targetWord[currentLetterIndex]}'.`);
+
+        }
+
+        /*
+           LETTERA SBAGLIATA
+        */
+
+        else {
+
+            endGame(
+                `Hai catturato la lettera sbagliata
+                "<strong>${eaten.char}</strong>"!<br>
+                Serviva "<strong>${targetWord[currentLetterIndex]}</strong>".`
+            );
+
             return;
         }
 
         updateInfo();
+
     } else {
+
+        /*
+           Se non mangia nulla,
+           la coda avanza normalmente.
+        */
+
         snake.pop();
     }
 
     draw();
 }
 
+/* =========================
+   COLLISIONI
+========================= */
+
 function checkCollision(head) {
-    // Muri
-    if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
+
+    /*
+       Muri
+    */
+
+    if (
+        head.x < 0 ||
+        head.x >= gridSize ||
+        head.y < 0 ||
+        head.y >= gridSize
+    ) {
         return true;
     }
-    // Coda
+
+    /*
+       Corpo
+    */
+
     for (let part of snake) {
-        if (head.x === part.x && head.y === part.y) {
+
+        if (
+            head.x === part.x &&
+            head.y === part.y
+        ) {
             return true;
         }
     }
+
     return false;
 }
 
@@ -435,104 +842,562 @@ function checkCollision(head) {
 ========================= */
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
     drawBackground();
     drawLetters();
     drawSnake();
 }
 
-function drawBackground() {
-    ctx.fillStyle = "#fffdf9";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+/* =========================
+   SFONDO PAGINA
+========================= */
 
-    ctx.strokeStyle = "#f0e6d2";
+function drawBackground() {
+
+    /*
+       Carta
+    */
+
+    ctx.fillStyle = "#fffaf1";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    /*
+       Leggera trama da carta
+    */
+
+    for (let y = 0; y < canvas.height; y += 5) {
+
+        ctx.strokeStyle =
+            "rgba(150,110,75,0.025)";
+
+        ctx.lineWidth = 1;
+
+        ctx.beginPath();
+
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+
+        ctx.stroke();
+    }
+
+    /*
+       Griglia molto più discreta
+    */
+
+    ctx.strokeStyle =
+        "rgba(121,92,70,0.075)";
+
     ctx.lineWidth = 1;
 
     for (let i = 0; i <= gridSize; i++) {
+
         ctx.beginPath();
-        ctx.moveTo(i * tileSize, 0);
-        ctx.lineTo(i * tileSize, canvas.height);
+
+        ctx.moveTo(
+            i * tileSize,
+            0
+        );
+
+        ctx.lineTo(
+            i * tileSize,
+            canvas.height
+        );
+
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.moveTo(0, i * tileSize);
-        ctx.lineTo(canvas.width, i * tileSize);
+
+        ctx.moveTo(
+            0,
+            i * tileSize
+        );
+
+        ctx.lineTo(
+            canvas.width,
+            i * tileSize
+        );
+
         ctx.stroke();
     }
+
+    /*
+       Piccoli elementi decorativi
+    */
+
+    ctx.fillStyle =
+        "rgba(120,88,65,.12)";
+
+    ctx.font = "12px Georgia";
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        "✦",
+        10,
+        14
+    );
+
+    ctx.fillText(
+        "✦",
+        canvas.width - 10,
+        canvas.height - 6
+    );
 }
 
+/* =========================
+   LETTERE
+========================= */
+
 function drawLetters() {
-    ctx.font = `bold ${tileSize * 0.75}px Georgia`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
 
     activeLetters.forEach(item => {
-        const x = item.x * tileSize + tileSize / 2;
-        const y = item.y * tileSize + tileSize / 2;
 
-        ctx.fillStyle = "#5d4037";
-        ctx.fillText(item.char, x, y);
+        const x =
+            item.x * tileSize +
+            tileSize / 2;
+
+        const y =
+            item.y * tileSize +
+            tileSize / 2;
+
+        const boxSize =
+            tileSize * 0.74;
+
+        const left =
+            x - boxSize / 2;
+
+        const top =
+            y - boxSize / 2;
+
+        /*
+           Ombra
+        */
+
+        ctx.fillStyle =
+            "rgba(70,45,30,.10)";
+
+        ctx.beginPath();
+
+        ctx.roundRect(
+            left + 1,
+            top + 2,
+            boxSize,
+            boxSize,
+            5
+        );
+
+        ctx.fill();
+
+        /*
+           Tessera
+        */
+
+        ctx.fillStyle =
+            item.isCorrect
+                ? "#f8e8c9"
+                : "#f1e7dc";
+
+        ctx.strokeStyle =
+            item.isCorrect
+                ? "#c9a86d"
+                : "#cbbbae";
+
+        ctx.lineWidth = 1.2;
+
+        ctx.beginPath();
+
+        ctx.roundRect(
+            left,
+            top,
+            boxSize,
+            boxSize,
+            5
+        );
+
+        ctx.fill();
+        ctx.stroke();
+
+        /*
+           Lettera
+        */
+
+        ctx.fillStyle =
+            item.isCorrect
+                ? "#51372b"
+                : "#806e63";
+
+        ctx.font =
+            `bold ${tileSize * .62}px Georgia`;
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.fillText(
+            item.char,
+            x,
+            y + 1
+        );
     });
 }
 
-function drawSnake() {
-    snake.forEach((part, index) => {
-        const x = part.x * tileSize;
-        const y = part.y * tileSize;
+/* =========================
+   SNAKE
+========================= */
 
-        if (index === 0) {
-            ctx.fillStyle = "#3e2723"; // Testa
-        } else {
-            ctx.fillStyle = "#8d6e63"; // Corpo
+function drawSnake() {
+
+    snake.forEach((part, index) => {
+
+        const x =
+            part.x * tileSize;
+
+        const y =
+            part.y * tileSize;
+
+        const padding = 2;
+
+        /*
+           Corpo
+        */
+
+        if (index !== 0) {
+
+            const bodyGradient =
+                ctx.createLinearGradient(
+                    x,
+                    y,
+                    x + tileSize,
+                    y + tileSize
+                );
+
+            bodyGradient.addColorStop(
+                0,
+                "#a9b59b"
+            );
+
+            bodyGradient.addColorStop(
+                1,
+                "#7f9478"
+            );
+
+            ctx.fillStyle =
+                bodyGradient;
+
+            ctx.beginPath();
+
+            ctx.roundRect(
+                x + padding,
+                y + padding,
+                tileSize - padding * 2,
+                tileSize - padding * 2,
+                6
+            );
+
+            ctx.fill();
+
+                        /*
+               Piccolo punto decorativo
+            */
+
+            ctx.fillStyle =
+                "rgba(255,255,255,.35)";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x + tileSize * .32,
+                y + tileSize * .32,
+                1.5,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+            return;
         }
 
+        /*
+           TESTA
+        */
+
+        const headGradient =
+            ctx.createLinearGradient(
+                x,
+                y,
+                x + tileSize,
+                y + tileSize
+            );
+
+        headGradient.addColorStop(
+            0,
+            "#735142"
+        );
+
+        headGradient.addColorStop(
+            1,
+            "#493127"
+        );
+
+        ctx.fillStyle =
+            headGradient;
+
         ctx.beginPath();
-        ctx.roundRect(x + 1, y + 1, tileSize - 2, tileSize - 2, 4);
+
+        ctx.roundRect(
+            x + 1,
+            y + 1,
+            tileSize - 2,
+            tileSize - 2,
+            7
+        );
+
+        ctx.fill();
+
+        /*
+           Occhi
+        */
+
+        drawSnakeEyes(
+            x,
+            y
+        );
+    });
+}
+
+function drawSnakeEyes(x, y) {
+
+    let eye1;
+    let eye2;
+
+    const centerX =
+        x + tileSize / 2;
+
+    const centerY =
+        y + tileSize / 2;
+
+    const eyeOffset = 4;
+
+    if (direction.x === 1) {
+
+        eye1 = {
+            x: centerX + 4,
+            y: centerY - eyeOffset
+        };
+
+        eye2 = {
+            x: centerX + 4,
+            y: centerY + eyeOffset
+        };
+
+    } else if (direction.x === -1) {
+
+        eye1 = {
+            x: centerX - 4,
+            y: centerY - eyeOffset
+        };
+
+        eye2 = {
+            x: centerX - 4,
+            y: centerY + eyeOffset
+        };
+
+    } else if (direction.y === -1) {
+
+        eye1 = {
+            x: centerX - eyeOffset,
+            y: centerY - 4
+        };
+
+        eye2 = {
+            x: centerX + eyeOffset,
+            y: centerY - 4
+        };
+
+    } else {
+
+        eye1 = {
+            x: centerX - eyeOffset,
+            y: centerY + 4
+        };
+
+        eye2 = {
+            x: centerX + eyeOffset,
+            y: centerY + 4
+        };
+    }
+
+    [eye1, eye2].forEach(eye => {
+
+        ctx.fillStyle = "#fffdf7";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            eye.x,
+            eye.y,
+            2.2,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.fillStyle = "#3d2921";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            eye.x,
+            eye.y,
+            .9,
+            0,
+            Math.PI * 2
+        );
+
         ctx.fill();
     });
 }
 
 /* =========================
-   FINE E PAUSA
+   PAROLA COMPLETATA
+========================= */
+
+function showWordCompleted() {
+
+    /*
+       Non blocchiamo la partita:
+       mostriamo solo per un attimo
+       un piccolo effetto sulla parola.
+    */
+
+    wordDisplay.style.transform =
+        "scale(1.08)";
+
+    wordDisplay.style.color =
+        "#a07836";
+
+    setTimeout(() => {
+
+        wordDisplay.style.transform =
+            "scale(1)";
+
+        wordDisplay.style.color =
+            "";
+
+    }, 350);
+}
+
+/* =========================
+   FINE PARTITA
 ========================= */
 
 function endGame(reason) {
+
     gameRunning = false;
+
+    isPaused = false;
+
     clearInterval(gameLoop);
 
+    /*
+       Record
+    */
+
     if (score > highscore) {
+
         highscore = score;
-        localStorage.setItem("snakeLetterarioHighscore", highscore);
+
+        localStorage.setItem(
+            "snakeLetterarioHighscore",
+            highscore
+        );
     }
 
     updateInfo();
 
-    overlayTitle.textContent = "💀 Fine Partita!";
-    overlayText.innerHTML = `${reason}<br><br>Punteggio: <strong>${score}</strong><br>Parole completate: <strong>${completedWordsCount}</strong>`;
-    startButton.textContent = "↻ Riprova";
+    overlayTitle.textContent =
+        "📖 La storia si è interrotta...";
+
+    overlayText.innerHTML = `
+        ${reason}
+        <br><br>
+
+        <span class="small-result">
+            Punteggio: <strong>${score}</strong>
+            &nbsp; · &nbsp;
+            Parole: <strong>${completedWordsCount}</strong>
+            &nbsp; · &nbsp;
+            Livello: <strong>${level}</strong>
+        </span>
+    `;
+
+    startButton.textContent =
+        "↻ Ricomincia il racconto";
 
     overlay.classList.remove("hidden");
 }
 
+/* =========================
+   PAUSA
+========================= */
+
 function togglePause() {
-    if (!gameRunning) return;
+
+    if (!gameRunning) {
+        return;
+    }
+
     isPaused = !isPaused;
 
     if (isPaused) {
-        overlayTitle.textContent = "⏸️ In Pausa";
-        overlayText.textContent = "Premi Spazio o P per riprendere la partita.";
-        startButton.textContent = "Riprendi";
+
+        overlayTitle.textContent =
+            "⏸️ Pagina in pausa";
+
+        overlayText.textContent =
+            "Il racconto è momentaneamente sospeso.\n\nPremi il pulsante per continuare.";
+
+        startButton.textContent =
+            "▶ Riprendi";
+
         overlay.classList.remove("hidden");
+
     } else {
+
         overlay.classList.add("hidden");
     }
 }
 
+/* =========================
+   INFO
+========================= */
+
 function updateInfo() {
-    scoreElement.textContent = score;
-    completedWordsElement.textContent = completedWordsCount;
-    highscoreElement.textContent = highscore;
+
+    scoreElement.textContent =
+        score;
+
+    completedWordsElement.textContent =
+        completedWordsCount;
+
+    highscoreElement.textContent =
+        highscore;
+
+    levelElement.textContent =
+        level;
 }
 
 /* =========================
@@ -540,41 +1405,192 @@ function updateInfo() {
 ========================= */
 
 function changeDirection(newDir) {
-    if (!gameRunning || isPaused) return;
 
-    if (direction.x === -newDir.x && direction.y === -newDir.y) return;
+    if (!gameRunning || isPaused) {
+        return;
+    }
+
+    /*
+       Impedisce inversioni immediate
+       di 180°.
+    */
+
+    if (
+        direction.x === -newDir.x &&
+        direction.y === -newDir.y
+    ) {
+        return;
+    }
+
     nextDirection = newDir;
 }
 
-document.addEventListener("keydown", function(e) {
-    const key = e.key.toLowerCase();
+/* =========================
+   TASTIERA
+========================= */
 
-    if (key === "arrowup" || key === "w") changeDirection({x: 0, y: -1});
-    if (key === "arrowdown" || key === "s") changeDirection({x: 0, y: 1});
-    if (key === "arrowleft" || key === "a") changeDirection({x: -1, y: 0});
-    if (key === "arrowright" || key === "d") changeDirection({x: 1, y: 0});
+document.addEventListener(
+    "keydown",
+    function(e) {
 
-    if (key === "p" || key === " ") togglePause();
-    if (key === "r" && !gameRunning) startGame();
-});
+        const key =
+            e.key.toLowerCase();
 
-document.querySelectorAll(".controls button[data-direction]").forEach(btn => {
-    btn.addEventListener("click", function() {
-        const d = this.dataset.direction;
-        if (d === "up") changeDirection({x: 0, y: -1});
-        if (d === "down") changeDirection({x: 0, y: 1});
-        if (d === "left") changeDirection({x: -1, y: 0});
-        if (d === "right") changeDirection({x: 1, y: 0});
-    });
-});
+        if (
+            key === "arrowup" ||
+            key === "w"
+        ) {
 
-startButton.addEventListener("click", () => {
-    if (isPaused) {
-        togglePause();
-    } else {
-        startGame();
+            e.preventDefault();
+
+            changeDirection({
+                x: 0,
+                y: -1
+            });
+        }
+
+        if (
+            key === "arrowdown" ||
+            key === "s"
+        ) {
+
+            e.preventDefault();
+
+            changeDirection({
+                x: 0,
+                y: 1
+            });
+        }
+
+        if (
+            key === "arrowleft" ||
+            key === "a"
+        ) {
+
+            e.preventDefault();
+
+            changeDirection({
+                x: -1,
+                y: 0
+            });
+        }
+
+        if (
+            key === "arrowright" ||
+            key === "d"
+        ) {
+
+            e.preventDefault();
+
+            changeDirection({
+                x: 1,
+                y: 0
+            });
+        }
+
+        if (
+            key === "p" ||
+            key === " "
+        ) {
+
+            e.preventDefault();
+
+            togglePause();
+        }
+
+        /*
+           R = nuova partita
+        */
+
+        if (
+            key === "r" &&
+            !gameRunning
+        ) {
+
+            startGame();
+        }
     }
-});
+);
+
+/* =========================
+   CONTROLLI TOUCH
+========================= */
+
+document
+    .querySelectorAll(
+        ".controls button[data-direction]"
+    )
+    .forEach(btn => {
+
+        btn.addEventListener(
+            "click",
+            function() {
+
+                const d =
+                    this.dataset.direction;
+
+                if (d === "up") {
+
+                    changeDirection({
+                        x: 0,
+                        y: -1
+                    });
+
+                } else if (d === "down") {
+
+                    changeDirection({
+                        x: 0,
+                        y: 1
+                    });
+
+                } else if (d === "left") {
+
+                    changeDirection({
+                        x: -1,
+                        y: 0
+                    });
+
+                } else if (d === "right") {
+
+                    changeDirection({
+                        x: 1,
+                        y: 0
+                    });
+                }
+            }
+        );
+    });
+
+/* =========================
+   PULSANTE PRINCIPALE
+========================= */
+
+startButton.addEventListener(
+    "click",
+    function() {
+
+        /*
+           Se siamo in pausa,
+           riprendiamo.
+
+           In qualsiasi altro caso
+           creiamo una partita completamente nuova.
+        */
+
+        if (isPaused) {
+
+            togglePause();
+
+        } else {
+
+            startGame();
+        }
+    }
+);
+
+/* =========================
+   DISEGNO INIZIALE
+========================= */
 
 draw();
 
