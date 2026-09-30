@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Snake Letterario 📚</title>
+<title>Snake Letterario – Halloween Edition 🎃</title>
 
 <style>
 * {
@@ -23,6 +23,7 @@
     --rose: #c98f87;
     --sage: #9aaf91;
     --gold: #c8a15a;
+    --orange: #d97724;
 }
 
 body {
@@ -30,7 +31,7 @@ body {
     font-family: 'Georgia', serif;
     background:
         radial-gradient(circle at top left, rgba(255,255,255,.7), transparent 35%),
-        linear-gradient(135deg, #f4e4cf, #e7d2b5);
+        linear-gradient(135deg, #f4e4cf, #e2ccab);
     color: var(--dark-brown);
     display: flex;
     justify-content: center;
@@ -45,13 +46,13 @@ body {
 }
 
 /* =========================
-   TITOLO
+   TITOLO & LINGUA
 ========================= */
 
 .title-decoration {
     font-size: 1.3rem;
     letter-spacing: 5px;
-    opacity: .65;
+    opacity: .75;
     margin-bottom: 3px;
 }
 
@@ -63,14 +64,70 @@ h1 {
 }
 
 .subtitle {
-    margin-bottom: 17px;
+    margin-bottom: 12px;
     font-size: .95rem;
     font-style: italic;
     color: #76584a;
 }
 
+.language-selector {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.lang-btn {
+    padding: 5px 10px;
+    font-size: .78rem;
+    border-radius: 10px;
+    background: rgba(255,250,241,.9);
+    color: var(--brown);
+    border: 1px solid #d9c5aa;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,.04);
+    transition: all .2s ease;
+}
+
+.lang-btn.active {
+    background: linear-gradient(135deg, #68493a, #4f352a);
+    color: #fff8e9;
+    border-color: var(--dark-brown);
+    box-shadow: 0 3px 8px rgba(67,43,33,.2);
+}
+
 /* =========================
-   PAROLA
+   MODE SELECTOR
+========================= */
+
+.mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.mode-btn {
+    padding: 7px 14px;
+    font-size: .85rem;
+    border-radius: 12px;
+    background: rgba(255,250,241,.9);
+    color: var(--brown);
+    border: 1px solid #d9c5aa;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    transition: all .2s ease;
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, #68493a, #4f352a);
+    color: #fff8e9;
+    border-color: var(--dark-brown);
+    box-shadow: 0 4px 10px rgba(67,43,33,.2);
+}
+
+/* =========================
+   PAROLA / STORIA
 ========================= */
 
 .word-box {
@@ -98,9 +155,13 @@ h1 {
 }
 
 #wordDisplay {
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    letter-spacing: 5px;
+    letter-spacing: 2px;
+    word-break: break-word;
+    max-height: 80px;
+    overflow-y: auto;
+    line-height: 1.4;
 }
 
 /* =========================
@@ -146,6 +207,7 @@ h1 {
     box-shadow:
         0 12px 30px rgba(61,41,33,.18),
         0 2px 0 rgba(255,255,255,.8) inset;
+    cursor: pointer;
 }
 
 canvas {
@@ -173,21 +235,20 @@ canvas {
 
 .overlay::before,
 .overlay::after {
-    content: "✦";
+    content: "🎃";
     position: absolute;
-    color: var(--gold);
-    opacity: .55;
-    font-size: 1.5rem;
+    opacity: .65;
+    font-size: 1.4rem;
 }
 
 .overlay::before {
-    top: 25px;
-    left: 30px;
+    top: 20px;
+    left: 25px;
 }
 
 .overlay::after {
-    bottom: 25px;
-    right: 30px;
+    bottom: 20px;
+    right: 25px;
 }
 
 .overlay.hidden {
@@ -195,15 +256,16 @@ canvas {
 }
 
 .overlay h2 {
-    font-size: clamp(1.65rem, 7vw, 2.15rem);
-    margin-bottom: 12px;
+    font-size: clamp(1.4rem, 5vw, 1.85rem);
+    margin-bottom: 10px;
     color: var(--dark-brown);
 }
 
 .overlay p {
-    margin-bottom: 20px;
-    line-height: 1.55;
+    margin-bottom: 14px;
+    line-height: 1.5;
     max-width: 370px;
+    font-size: .9rem;
     color: #6d5144;
 }
 
@@ -215,18 +277,51 @@ canvas {
     border-radius: 12px;
 }
 
+.story-selection-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    max-width: 320px;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 14px;
+    padding-right: 4px;
+}
+
+.story-option-btn {
+    background: rgba(255,250,241,.95);
+    border: 1px solid #d9c5aa;
+    color: var(--brown);
+    padding: 9px 12px;
+    border-radius: 12px;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0,0,0,.04);
+    transition: all .2s ease;
+}
+
+.story-option-btn:hover {
+    background: #fffdf8;
+    border-color: var(--orange);
+    color: var(--dark-brown);
+    transform: translateY(-1px);
+}
+
 /* =========================
-   BOTTONI
+   BOTTONI & CONTROLLI
 ========================= */
 
 button {
     border: none;
     background: linear-gradient(135deg, #68493a, #4f352a);
     color: #fff8e9;
-    padding: 12px 23px;
+    padding: 11px 22px;
     border-radius: 22px;
     font-family: Georgia, serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 5px 12px rgba(67,43,33,.18);
@@ -247,34 +342,31 @@ button:active {
 }
 
 .controls {
-    margin: 16px auto 0;
-    width: min(205px, 65vw);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
+    margin: 14px auto 0;
+    width: min(240px, 80vw);
+    display: flex;
+    justify-content: center;
 }
 
-.controls button {
-    padding: 11px 0;
-    border-radius: 13px;
-    font-size: 1.15rem;
-    background: rgba(255,250,241,.9);
+.nokia-btn {
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 14px;
+    font-size: 1rem;
+    background: rgba(255,250,241,.95);
     color: var(--brown);
     border: 1px solid #d9c5aa;
     box-shadow: 0 3px 8px rgba(0,0,0,.07);
     touch-action: manipulation;
+    letter-spacing: 1px;
 }
 
-.controls button:hover {
+.nokia-btn:hover {
     background: #fffdf8;
 }
 
-.empty {
-    visibility: hidden;
-}
-
 .tip {
-    margin-top: 12px;
+    margin-top: 10px;
     font-size: .76rem;
     color: #765d50;
     opacity: .8;
@@ -291,7 +383,7 @@ button:active {
 
     .subtitle {
         font-size: .84rem;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
 
     .info {
@@ -308,8 +400,7 @@ button:active {
     }
 
     #wordDisplay {
-        font-size: 1.15rem;
-        letter-spacing: 4px;
+        font-size: 1rem;
     }
 
     #game {
@@ -323,56 +414,65 @@ button:active {
 
 <div class="game-wrapper">
 
-    <div class="title-decoration">✦ ✧ ✦</div>
+    <div class="title-decoration">🎃 🦇 👻</div>
 
-    <h1>📜 Snake Letterario</h1>
+    <h1 id="mainTitle">📜 Snake Letterario</h1>
 
-    <div class="subtitle">
-        Ricomponi la parola, una lettera alla volta.
+    <div class="subtitle" id="mainSubtitle">
+        Raccogli parole, costruisci storie.
+    </div>
+
+    <div class="language-selector">
+        <button class="lang-btn active" data-lang="it">🇮🇹 Italiano</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+        <button class="lang-btn" data-lang="de">🇩🇪 Deutsch</button>
+    </div>
+
+    <div class="mode-selector">
+        <button class="mode-btn active" data-mode="poppante" id="modePoppanteBtn">🐣 Poppante</button>
+        <button class="mode-btn" data-mode="adolescente" id="modeAdolescenteBtn">🧑 Adolescente</button>
     </div>
 
     <div class="word-box">
-        <span class="word-label">Parola da ricomporre</span>
-        <span id="wordDisplay">_ _ _ _</span>
+        <span class="word-label" id="wordLabel">Parola da comporre</span>
+        <span id="wordDisplay">_ _ _ _ _</span>
     </div>
 
     <div class="info">
         <div class="box">
-            Punti
+            <span id="labelScore">Punti</span>
             <strong id="score">0</strong>
         </div>
 
         <div class="box">
-            Parole
+            <span id="labelCompleted">Raccolte</span>
             <strong id="completedWords">0</strong>
         </div>
 
         <div class="box">
-            Livello
+            <span id="labelLevel">Livello</span>
             <strong id="level">1</strong>
         </div>
 
         <div class="box">
-            Record
+            <span id="labelHighscore">Record</span>
             <strong id="highscore">0</strong>
         </div>
     </div>
 
-    <div id="game">
+    <div id="game" onclick="rotateSnake()">
 
         <canvas id="canvas" width="400" height="400">
-            Snake Letterario: guida lo snake e raccogli le lettere per comporre la parola.
+            Snake Letterario Halloween Edition: guida lo snake e componi le parole.
         </canvas>
 
         <div id="overlay" class="overlay">
 
-            <h2 id="overlayTitle">📖 Pronto a Scrivere?</h2>
+            <h2 id="overlayTitle">📖 Pronto per Halloween?</h2>
 
             <p id="overlayText">
-                Cattura le lettere giuste in sequenza per ricomporre
-                la parola target.<br><br>
-                Ma attenzione: le altre lettere sono distrattori!
-                E i muri non perdonano.
+                Guida il serpente e componi le parole lettera per lettera.<br><br>
+                Scegli la modalità in alto e premi il tasto per iniziare l'avventura spettrale!
             </p>
 
             <button id="startButton">✦ Inizia la Lettura</button>
@@ -382,23 +482,11 @@ button:active {
     </div>
 
     <div class="controls">
-
-        <button class="empty" aria-hidden="true"></button>
-
-        <button data-direction="up" aria-label="Su">⬆️</button>
-
-        <button class="empty" aria-hidden="true"></button>
-
-        <button data-direction="left" aria-label="Sinistra">⬅️</button>
-
-        <button data-direction="down" aria-label="Giù">⬇️</button>
-
-        <button data-direction="right" aria-label="Destra">➡️</button>
-
+        <button class="nokia-btn" id="nokiaBtn" onclick="rotateSnake()" aria-label="Gira">🔄 Gira (Nokia Tap)</button>
     </div>
 
-    <div class="tip">
-        PC: Frecce / WASD · Pausa: Spazio/P · Riprova: R
+    <div class="tip" id="tipText">
+        PC: Frecce / WASD · Tocco schermo o pulsante: Gira · Pausa: Spazio/P
     </div>
 
 </div>
@@ -413,30 +501,374 @@ const completedWordsElement = document.getElementById("completedWords");
 const highscoreElement = document.getElementById("highscore");
 const levelElement = document.getElementById("level");
 const wordDisplay = document.getElementById("wordDisplay");
+const wordLabel = document.getElementById("wordLabel");
 
 const overlay = document.getElementById("overlay");
 const overlayTitle = document.getElementById("overlayTitle");
 const overlayText = document.getElementById("overlayText");
 const startButton = document.getElementById("startButton");
 
+const mainTitle = document.getElementById("mainTitle");
+const mainSubtitle = document.getElementById("mainSubtitle");
+const modePoppanteBtn = document.getElementById("modePoppanteBtn");
+const modeAdolescenteBtn = document.getElementById("modeAdolescenteBtn");
+const labelScore = document.getElementById("labelScore");
+const labelCompleted = document.getElementById("labelCompleted");
+const labelLevel = document.getElementById("labelLevel");
+const labelHighscore = document.getElementById("labelHighscore");
+const nokiaBtn = document.getElementById("nokiaBtn");
+const tipText = document.getElementById("tipText");
+
 const gridSize = 20;
 const tileSize = canvas.width / gridSize;
 
 /* =========================
-   PAROLE
+   SISTEMA DI TRADUZIONE CENTRALIZZATO
 ========================= */
 
-const wordList = [
-    "LIBRO",
-    "STORIA",
-    "SCRITTURA",
-    "ROMANZO",
-    "PAGINA",
-    "LEGGERE",
-    "POESIA"
+let currentLanguage = localStorage.getItem("snakeLetterarioHalloweenLang") || "it";
+
+const translations = {
+    it: {
+        title: "📜 Snake Letterario",
+        subtitle: "Raccogli parole, costruisci storie.",
+        poppante: "🐣 Poppante",
+        adolescente: "🧑 Adolescente",
+        wordToCompose: "Parola da comporre",
+        score: "Punti",
+        completed: "Raccolte",
+        level: "Livello",
+        highscore: "Record",
+        nokiaTap: "🔄 Gira (Nokia Tap)",
+        tip: "PC: Frecce / WASD · Tocco schermo o pulsante: Gira · Pausa: Spazio/P",
+        startTitle: "📖 Pronto per Halloween?",
+        startText: "Guida il serpente e componi le parole lettera per lettera.<br><br>Scegli la modalità in alto e premi il tasto per iniziare l'avventura spettrale!",
+        startButton: "✦ Inizia la Lettura",
+        adolescenteDesc: "Scegli una storia e raccogli le parole corrette nell'ordine giusto per completarla.<br><br>Cerca la parola corretta tra i distrattori sul campo!",
+        poppanteDesc: "Raccogli le lettere nell'ordine giusto per comporre le parole spettrali.<br><br>Se sbagli lettera perdi un punto e un pezzetto di coda, ma la partita continua!",
+        storySelectTitle: "📖 Scegli una storia",
+        storySelectPrompt: "Seleziona quale racconto spettrale vuoi comporre:",
+        storySelectBtn: "📖 Scegli altra",
+        replayStoryBtn: "🔄 Rigioca questa",
+        restartPoppante: "↻ Riprova la Corsa Spettrale",
+        restartAdolescente: "↻ Riprova la Notte delle Streghe",
+        pauseTitle: "⏸️ Gioco in pausa",
+        pauseText: "La magia è momentaneamente sospesa.<br><br>Premi il pulsante per continuare.",
+        resumeBtn: "▶ Riprendi",
+        poppanteGameOver: "🎃 La corsa è finita!",
+        adolescenteGameOver: "📖 La storia si è interrotta...",
+        storyCompletedTitle: "✨ Storia Completata!",
+        storyCompletedMsg: (title, score, highscore) => `Hai completato con successo <strong>"${title}"</strong>!<br><br><span class="small-result">Punteggio: <strong>${score}</strong> &nbsp; · &nbsp; Record: <strong>${highscore}</strong></span>`,
+        poppanteStats: (score, words, level) => `La tua corsa tra le lettere si è fermata.<br><br><span class="small-result">Punteggio: <strong>${score}</strong> &nbsp; · &nbsp; Parole: <strong>${words}</strong> &nbsp; · &nbsp; Livello: <strong>${level}</strong></span>`,
+        adolescenteStats: (score, words, level) => `La storia si è interrotta.<br><br><span class="small-result">Punteggio: <strong>${score}</strong> &nbsp; · &nbsp; Raccolte: <strong>${words}</strong> &nbsp; · &nbsp; Livello: <strong>${level}</strong></span>`,
+        storyProgressLabel: (title) => `Storia: ${title}`,
+        storyWaitPrompt: "(Continua la storia trovando la parola giusta...)"
+    },
+    en: {
+        title: "📜 Literary Snake",
+        subtitle: "Collect words, build stories.",
+        poppante: "🐣 Novice",
+        adolescente: "🧑 Teen",
+        wordToCompose: "Word to compose",
+        score: "Score",
+        completed: "Collected",
+        level: "Level",
+        highscore: "Highscore",
+        nokiaTap: "🔄 Turn (Nokia Tap)",
+        tip: "PC: Arrows / WASD · Tap screen or button: Turn · Pause: Space/P",
+        startTitle: "📖 Ready for Halloween?",
+        startText: "Guide the snake and compose words letter by letter.<br><br>Choose the mode above and press the button to start the spooky adventure!",
+        startButton: "✦ Start Reading",
+        adolescenteDesc: "Choose a story and collect the correct words in the right order to complete it.<br><br>Find the correct word among the distractors on the field!",
+        poppanteDesc: "Collect letters in the right order to compose spooky words.<br><br>If you pick the wrong letter you lose a point and a piece of tail, but the game goes on!",
+        storySelectTitle: "📖 Choose a Story",
+        storySelectPrompt: "Select which spooky tale you want to compose:",
+        storySelectBtn: "📖 Choose another",
+        replayStoryBtn: "🔄 Replay this",
+        restartPoppante: "↻ Try Spooky Run Again",
+        restartAdolescente: "↻ Try Witching Night Again",
+        pauseTitle: "⏸️ Game Paused",
+        pauseText: "The magic is temporarily suspended.<br><br>Press the button to continue.",
+        resumeBtn: "▶ Resume",
+        poppanteGameOver: "🎃 The run is over!",
+        adolescenteGameOver: "📖 The story was interrupted...",
+        storyCompletedTitle: "✨ Story Completed!",
+        storyCompletedMsg: (title, score, highscore) => `You have successfully completed <strong>"${title}"</strong>!<br><br><span class="small-result">Score: <strong>${score}</strong> &nbsp; · &nbsp; Highscore: <strong>${highscore}</strong></span>`,
+        poppanteStats: (score, words, level) => `Your run through the letters has stopped.<br><br><span class="small-result">Score: <strong>${score}</strong> &nbsp; · &nbsp; Words: <strong>${words}</strong> &nbsp; · &nbsp; Level: <strong>${level}</strong></span>`,
+        adolescenteStats: (score, words, level) => `The story was interrupted.<br><br><span class="small-result">Score: <strong>${score}</strong> &nbsp; · &nbsp; Collected: <strong>${words}</strong> &nbsp; · &nbsp; Level: <strong>${level}</strong></span>`,
+        storyProgressLabel: (title) => `Story: ${title}`,
+        storyWaitPrompt: "(Continue the story by finding the right word...)"
+    },
+    de: {
+        title: "📜 Literarische Schlange",
+        subtitle: "Sammle Wörter, baue Geschichten.",
+        poppante: "🐣 Anfänger",
+        adolescente: "🧑 Jugendlicher",
+        wordToCompose: "Zu bildendes Wort",
+        score: "Punkte",
+        completed: "Gesammelt",
+        level: "Level",
+        highscore: "Rekord",
+        nokiaTap: "🔄 Drehen (Nokia Tap)",
+        tip: "PC: Pfeiltasten / WASD · Bildschirm/Button tippen: Drehen · Pause: Leertaste/P",
+        startTitle: "📖 Bereit für Halloween?",
+        startText: "Steuere die Schlange und bilde Wörter Buchstabe für Buchstabe.<br><br>Wähle oben den Modus und drücke den Startknopf!",
+        startButton: "✦ Lektüre beginnen",
+        adolescenteDesc: "Wähle eine Geschichte und sammle die richtigen Wörter in der richtigen Reihenfolge.<br><br>Finde das richtige Wort unter den Ablenkungen auf dem Spielfeld!",
+        poppanteDesc: "Sammle die Buchstaben in der richtigen Reihenfolge, um Gruselwörter zu bilden.<br><br>Bei falschem Buchstaben verlierst du einen Punkt und ein Schwanzstück, aber das Spiel läuft weiter!",
+        storySelectTitle: "📖 Wähle eine Geschichte",
+        storySelectPrompt: "Wähle aus, welche Gruselgeschichte du schreiben möchtest:",
+        storySelectBtn: "📖 Andere wählen",
+        replayStoryBtn: "🔄 Wiederholen",
+        restartPoppante: "↻ Grusel-Lauf wiederholen",
+        restartAdolescente: "↻ Hexennacht wiederholen",
+        pauseTitle: "⏸️ Spiel pausiert",
+        pauseText: "Die Magie ruht einen Moment.<br><br>Drücke den Knopf, um fortzufahren.",
+        resumeBtn: "▶ Weiter",
+        poppanteGameOver: "🎃 Der Lauf ist vorbei!",
+        adolescenteGameOver: "📖 Die Geschichte wurde unterbrochen...",
+        storyCompletedTitle: "✨ Geschichte abgeschlossen!",
+        storyCompletedMsg: (title, score, highscore) => `Du hast <strong>"${title}"</strong> erfolgreich vervollständigt!<br><br><span class="small-result">Punkte: <strong>${score}</strong> &nbsp; · &nbsp; Rekord: <strong>${highscore}</strong></span>`,
+        poppanteStats: (score, words, level) => `Dein Lauf durch die Buchstaben hat geendet.<br><br><span class="small-result">Punkte: <strong>${score}</strong> &nbsp; · &nbsp; Wörter: <strong>${words}</strong> &nbsp; · &nbsp; Level: <strong>${level}</strong></span>`,
+        adolescenteStats: (score, words, level) => `Die Geschichte wurde unterbrochen.<br><br><span class="small-result">Punkte: <strong>${score}</strong> &nbsp; · &nbsp; Gesammelt: <strong>${words}</strong> &nbsp; · &nbsp; Level: <strong>${level}</strong></span>`,
+        storyProgressLabel: (title) => `Geschichte: ${title}`,
+        storyWaitPrompt: "(Setze die Geschichte fort, indem du das richtige Wort findest...)"
+    }
+};
+
+function updateUILanguage() {
+    const t = translations[currentLanguage];
+    mainTitle.textContent = t.title;
+    mainSubtitle.textContent = t.subtitle;
+    modePoppanteBtn.textContent = t.poppante;
+    modeAdolescenteBtn.textContent = t.adolescente;
+    labelScore.textContent = t.score;
+    labelCompleted.textContent = t.completed;
+    labelLevel.textContent = t.level;
+    labelHighscore.textContent = t.highscore;
+    nokiaBtn.textContent = t.nokiaTap;
+    tipText.textContent = t.tip;
+
+    if (!gameRunning) {
+        if (isPaused) {
+            overlayTitle.textContent = t.pauseTitle;
+            overlayText.innerHTML = t.pauseText;
+            startButton.textContent = t.resumeBtn;
+        } else if (gameMode === "adolescente" && !activeStory && overlayTitle.textContent.includes("Scegli") || overlayTitle.textContent.includes("Choose") || overlayTitle.textContent.includes("Wähle")) {
+            showStorySelectionScreen();
+        } else if (!overlayTitle.textContent.includes("Completata") && !overlayTitle.textContent.includes("Completed") && !overlayTitle.textContent.includes("abgeschlossen")) {
+            overlayTitle.textContent = t.startTitle;
+            overlayText.innerHTML = gameMode === "adolescente" ? t.adolescenteDesc : t.poppanteDesc;
+            startButton.textContent = t.startButton;
+        }
+    }
+
+    if (gameMode === "adolescente" && activeStory) {
+        wordLabel.textContent = translations[currentLanguage].storyProgressLabel(activeStory.title[currentLanguage]);
+        updateWordDisplayStory();
+    } else if (gameMode === "poppante" && !gameRunning) {
+        wordLabel.textContent = t.wordToCompose;
+    }
+}
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+        if (gameRunning) return; // Non interrompere la partita in corso
+        document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        currentLanguage = this.dataset.lang;
+        localStorage.setItem("snakeLetterarioHalloweenLang", currentLanguage);
+        updateUILanguage();
+        if (gameMode === "adolescente" && !activeStory) {
+            showStorySelectionScreen();
+        }
+    });
+});
+
+// Imposta il pulsante lingua attivo all'avvio
+document.querySelectorAll(".lang-btn").forEach(b => {
+    if (b.dataset.lang === currentLanguage) {
+        b.classList.add("active");
+    } else {
+        b.classList.remove("active");
+    }
+});
+
+/* =========================
+   VOCABOLARI PER LINGUA
+========================= */
+
+const vocabularies = {
+    it: {
+        original: [
+            "CASA", "LIBRO", "MARE", "SOLE", "LUNA", "NOTTE", "VENTO", "PIOGGIA", 
+            "ALBERO", "FIORE", "PIETRA", "TEMPO", "GIOCO", "MONDO", "PAROLA", 
+            "STORIA", "AMICO", "FUOCO", "COLORE", "VIAGGIO"
+        ],
+        halloween: [
+            "ZUCCA", "FANTASMA", "STREGA", "STREGONE", "VAMPIRO", "RAGNO", "RAGNATELA", 
+            "SCHELETRO", "TESCHIO", "MOSTRO", "ZOMBIE", "MUMMIA", "CIMITERO", "TOMBA", 
+            "SPETTRO", "CALDERONE", "PIPISTRELLO", "PAURA", "ORRORE", "INCANTESIMO", 
+            "POZIONE", "CANDELA", "DOLCETTO", "SCHERZETTO", "MISTERO", "INCUBO", 
+            "SUSSURRO", "MALEFICIO", "SORTILEGIO", "SPETTRALE", "TENEBRE", "BOSCO", 
+            "PIENA", "OMBRA", "LANTERNA", "LUCCIOLE", "PORTA", "CHIAVE"
+        ],
+        alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    },
+    en: {
+        original: [
+            "HOUSE", "BOOK", "SEA", "SUN", "MOON", "NIGHT", "WIND", "RAIN", 
+            "TREE", "FLOWER", "STONE", "TIME", "GAME", "WORLD", "WORD", 
+            "STORY", "FRIEND", "FIRE", "COLOR", "JOURNEY"
+        ],
+        halloween: [
+            "PUMPKIN", "GHOST", "WITCH", "SORCERER", "VAMPIRE", "SPIDER", "COBWEB", 
+            "SKELETON", "SKULL", "MONSTER", "ZOMBIE", "MUMMY", "CEMETERY", "GRAVE", 
+            "SPECTER", "CAULDRON", "BAT", "FEAR", "HORROR", "SPELL", 
+            "POTION", "CANDLE", "CANDY", "TRICK", "MYSTERY", "NIGHTMARE", 
+            "WHISPER", "CURSE", "CHARM", "SPOOKY", "DARKNESS", "WOODS", 
+            "FULL", "SHADOW", "LANTERN", "FIREFLIES", "DOOR", "KEY"
+        ],
+        alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    },
+    de: {
+        original: [
+            "HAUS", "BUCH", "MEER", "SONNE", "MOND", "NACHT", "WIND", "REGEN", 
+            "BAUM", "BLUME", "STEIN", "ZEIT", "SPIEL", "WELT", "WORT", 
+            "GESCHICHTE", "FREUND", "FEUER", "FARBE", "REISE"
+        ],
+        halloween: [
+            "KUERBIS", "GEIST", "HEXE", "HEXENMEISTER", "VAMPIR", "SPINNE", "SPINNENWEB", 
+            "SKELETT", "SCHAEDEL", "MONSTER", "ZOMBIE", "MUMIE", "FRIEDHOF", "GRAB", 
+            "GESPENST", "KESSEL", "FLEDERMAUS", "ANGST", "HORROR", "ZAUBER", 
+            "TRAENKCHEN", "KERZE", "SUESSIGKEIT", "STREICH", "GEHEIMNIS", "ALBTRAUM", 
+            "FLUESTERN", "VERFLUCHUNG", "SPUK", "DUNKELHEIT", "WALD", 
+            "VOLL", "SCHATTEN", "LATERNE", "TUERE", "SCHLUESSEL"
+        ],
+        alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"
+    }
+};
+
+function getCombinedWordList() {
+    const v = vocabularies[currentLanguage];
+    return [...v.original, ...v.halloween];
+}
+
+/* =========================
+   6 STORIE CURATE TRADOTTE (MODALITÀ ADOLESCENTE)
+========================= */
+
+const stories = [
+    {
+        title: {
+            it: "La zucca alla finestra",
+            en: "The Pumpkin at the Window",
+            de: "Der Kürbis am Fenster"
+        },
+        text: {
+            it: "Una sera di ottobre una piccola zucca illuminata brillava alla finestra mentre fuori soffiava il vento d'autunno.",
+            en: "One October evening a small illuminated pumpkin glowed at the window while the autumn wind blew outside.",
+            de: "Eines Oktobertabends leuchtete ein kleiner beleuchteter Kürbis am Fenster, während draußen der Herbstwind blies."
+        },
+        words: {
+            it: ["UNA", "SERA", "DI", "OTTOBRE", "UNA", "PICCOLA", "ZUCCA", "ILLUMINATA", "BRILLAVA", "ALLA", "FINESTRA", "MENTRE", "FUORI", "SOFFIAVA", "IL", "VENTO"],
+            en: ["ONE", "OCTOBER", "EVENING", "A", "SMALL", "ILLUMINATED", "PUMPKIN", "GLOWED", "AT", "THE", "WINDOW", "WHILE", "THE", "AUTUMN", "WIND", "BLEW"],
+            de: ["EINES", "OKTOBERABENDS", "LEUCHTETE", "EIN", "KLEINER", "BELEUCHTETER", "KUERBIS", "AM", "FENSTER", "WÄHREND", "DRAUßEN", "DER", "HERBSTWIND", "BLIES"]
+        }
+    },
+    {
+        title: {
+            it: "Il gatto nero",
+            en: "The Black Cat",
+            de: "Die schwarze Katze"
+        },
+        text: {
+            it: "Un misterioso gatto nero attraverso il sentiero buio vicino al vecchio cimitero sotto lo sguardo della luna piena.",
+            en: "A mysterious black cat crossed the dark path near the old cemetery under the gaze of the full moon.",
+            de: "Eine geheimnisvolle schwarze Katze überquerte den dunklen Pfad nahe dem alten Friedhof unter dem Blick des Vollmonds."
+        },
+        words: {
+            it: ["UN", "MISTERIOSO", "GATTO", "NERO", "ATTRAVERSO", "IL", "SENTIERO", "BUIO", "VICINO", "AL", "VECCHIO", "CIMITERO", "SOTTO", "LO", "SGUARDO", "DELLA", "LUNA", "PIENA"],
+            en: ["A", "MYSTERIOUS", "BLACK", "CAT", "CROSSED", "THE", "DARK", "PATH", "NEAR", "THE", "OLD", "CEMETERY", "UNDER", "THE", "GAZE", "OF", "THE", "FULL", "MOON"],
+            de: ["EINE", "GEHEIMNISVOLLE", "SCHWARZE", "KATZE", "UEBERQUERTE", "DEN", "DUNKLEN", "PFAD", "NAHE", "DEM", "ALTEN", "FRIEDHOF", "UNTER", "DEM", "BLICK", "DES", "VOLLMONDS"]
+        }
+    },
+    {
+        title: {
+            it: "La strega pasticciona",
+            en: "The Clumsy Witch",
+            de: "Die schusselige Hexe"
+        },
+        text: {
+            it: "Nel suo vecchio calderone la simpatica strega mescolava una pozione magica fatta di caramelle e misteri.",
+            en: "In her old cauldron the friendly witch mixed a magic potion made of candy and mysteries.",
+            de: "In ihrem alten Kessel mischte die freundliche Hexe einen Zaubertrank aus Süßigkeiten und Geheimnissen."
+        },
+        words: {
+            it: ["NEL", "SUO", "VECCHIO", "CALDERONE", "LA", "SIMPATICA", "STREGA", "MESCOLAVA", "UNA", "POZIONE", "MAGICA", "FATTA", "DI", "CARAMELLE", "E", "MISTERI"],
+            en: ["IN", "HER", "OLD", "CAULDRON", "THE", "FRIENDLY", "WITCH", "MIXED", "A", "MAGIC", "POTION", "MADE", "OF", "CANDY", "AND", "MYSTERIES"],
+            de: ["IN", "IHREM", "ALTEN", "KESSEL", "MISCHTE", "DIE", "FREUNDLICHE", "HEXE", "EINEN", "ZAUBERTRANK", "AUS", "SUESSIGKEITEN", "UND", "GEHEIMNISSEN"]
+        }
+    },
+    {
+        title: {
+            it: "La bambina nel bosco",
+            en: "The Girl in the Woods",
+            de: "Das Mädchen im Wald"
+        },
+        text: {
+            it: "La coraggiosa bambina camminava nel bosco incantato ascoltando il dolce fruscio delle foglie nella notte oscura.",
+            en: "The brave little girl walked in the enchanted woods listening to the gentle rustle of leaves in the dark night.",
+            de: "Das mutige kleine Mädchen ging durch den verwunschenen Wald und lauschte dem sanften Rascheln der Blätter in der dunklen Nacht."
+        },
+        words: {
+            it: ["LA", "CORAGGIOSA", "BAMBINA", "CAMMINAVA", "NEL", "BOSCO", "INCANTATO", "ASCOLTANDO", "IL", "DOLCE", "FRUSCIO", "DELLE", "FOGLIE", "NELLA", "NOTTE", "OSCURA"],
+            en: ["THE", "BRAVE", "LITTLE", "GIRL", "WALKED", "IN", "THE", "ENCHANTED", "WOODS", "LISTENING", "TO", "THE", "GENTLE", "RUSTLE", "OF", "LEAVES", "IN", "THE", "DARK", "NIGHT"],
+            de: ["DAS", "MUTIGE", "KLEINE", "MAEDCHEN", "GING", "DURCH", "DEN", "VERWUNSCHENEN", "WALD", "UND", "LAUSCHTE", "DEM", "SANFTEN", "RASCHELN", "DER", "BLAETTER", "IN", "DER", "DUNKLEN", "NACHT"]
+        }
+    },
+    {
+        title: {
+            it: "La casa abbandonata",
+            en: "The Abandoned House",
+            de: "Das verlassene Haus"
+        },
+        text: {
+            it: "Dietro la porta scricchiolante della casa abbandonata un simpatico fantasma salutava i bambini in cerca di dolcetti.",
+            en: "Behind the creaking door of the abandoned house a friendly ghost greeted children looking for treats.",
+            de: "Hinter der knarrenden Tür des verlassenen Hauses begrüßte ein freundlicher Geist Kinder auf der Suche nach Süßigkeiten."
+        },
+        words: {
+            it: ["DIETRO", "LA", "PORTA", "SCRICCHIOLANTE", "DELLA", "CASA", "ABBANDONATA", "UN", "SIMPATICO", "FANTASMA", "SALUTAVA", "I", "BAMBINI", "IN", "CERCA", "DI", "DOLCETTI"],
+            en: ["BEHIND", "THE", "CREAKING", "DOOR", "OF", "THE", "ABANDONED", "HOUSE", "A", "FRIENDLY", "GHOST", "GREETED", "CHILDREN", "LOOKING", "FOR", "TREATS"],
+            de: ["HINTER", "DER", "KNARRENDEN", "TUER", "DES", "VERLASSENEN", "HAUSES", "BEGRUßTE", "EIN", "FREUNDLICHER", "GEIST", "KINDER", "AUF", "DER", "SUCHE", "NACH", "SUESSIGKEITEN"]
+        }
+    },
+    {
+        title: {
+            it: "La notte della luna piena",
+            en: "The Night of the Full Moon",
+            de: "Die Nacht des Vollmonds"
+        },
+        text: {
+            it: "Sotto una splendida luna piena pipistrelli silenziosi volavano leggeri mentre la festa di Halloween cominciava.",
+            en: "Under a splendid full moon silent bats flew lightly as the Halloween party began.",
+            de: "Unter einem herrlichen Vollmond flogen stille Fledermäuse leicht dahin, während das Halloweenfest begann."
+        },
+        words: {
+            it: ["SOTTO", "UNA", "SPLENDIDA", "LUNA", "PIENA", "PIPISTRELLI", "SILENZIOSI", "VOLAVANO", "LEGGERI", "MENTRE", "LA", "FESTA", "DI", "HALLOWEEN", "COMINCIAVA"],
+            en: ["UNDER", "A", "SPLENDID", "FULL", "MOON", "SILENT", "BATS", "FLEW", "LIGHTLY", "AS", "THE", "HALLOWEEN", "PARTY", "BEGAN"],
+            de: ["UNTER", "EINEM", "HERRLICHEN", "VOLLMOND", "FLOGEN", "STILLE", "FLEDERMAEUSE", "LEICHT", "DAHIN", "WÄHREND", "DAS", "HALLOWEENFEST", "BEGANN"]
+        }
+    }
 ];
 
-let currentWordIndex = 0;
+let gameMode = "poppante"; // "poppante" o "adolescente"
+let currentStoryIndex = 0;
+let activeStory = null;
+let storyWordIndex = 0;
+
+// Variabili specifiche modalità Poppante (lettere)
 let targetWord = "";
 let currentLetterIndex = 0;
 
@@ -445,7 +877,7 @@ let currentLetterIndex = 0;
 ========================= */
 
 let snake = [];
-let activeLetters = [];
+let activeItems = []; // Elementi sul campo (lettere o parole)
 
 let direction = {x: 1, y: 0};
 let nextDirection = {x: 1, y: 0};
@@ -453,7 +885,7 @@ let nextDirection = {x: 1, y: 0};
 let score = 0;
 let completedWordsCount = 0;
 let highscore = Number(
-    localStorage.getItem("snakeLetterarioHighscore")
+    localStorage.getItem("snakeLetterarioHalloweenHighscore")
 ) || 0;
 
 let level = 1;
@@ -465,26 +897,80 @@ let gameLoop = null;
 highscoreElement.textContent = highscore;
 
 /* =========================
-   LIVELLI
+   SELEZIONE MODALITÀ
+========================= */
+
+document.querySelectorAll(".mode-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+        if (gameRunning) return;
+        document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        gameMode = this.dataset.mode;
+        
+        const t = translations[currentLanguage];
+        if (gameMode === "adolescente") {
+            overlayTitle.textContent = t.adolescente;
+            overlayText.innerHTML = t.adolescenteDesc;
+        } else {
+            overlayTitle.textContent = t.poppante;
+            overlayText.innerHTML = t.poppanteDesc;
+        }
+    });
+});
+
+/* =========================
+   LIVELLI E VELOCITÀ
 ========================= */
 
 function getGameSpeed() {
-
-    /*
-       Più alto è il livello,
-       più piccolo è l'intervallo
-       e quindi più veloce è lo snake.
-    */
-
-    return Math.max(75, 150 - ((level - 1) * 10));
+    return Math.max(70, 140 - ((level - 1) * 8));
 }
+
+/* =========================
+   FLUSSO DI AVVIO E SCELTA STORIE
+========================= */
+
+function handleStartClick() {
+    if (isPaused) {
+        togglePause();
+        return;
+    }
+
+    if (gameMode === "adolescente" && !activeStory) {
+        showStorySelectionScreen();
+    } else {
+        startGame();
+    }
+}
+
+function showStorySelectionScreen() {
+    const t = translations[currentLanguage];
+    overlayTitle.textContent = t.storySelectTitle;
+    
+    let htmlContent = `<p style="margin-bottom: 10px; font-size: 0.85rem;">${t.storySelectPrompt}</p>`;
+    htmlContent += `<div class="story-selection-list">`;
+    
+    stories.forEach((story, idx) => {
+        htmlContent += `<button class="story-option-btn" onclick="selectStoryAndStart(${idx})">🎃 ${story.title[currentLanguage]}</button>`;
+    });
+    
+    htmlContent += `</div>`;
+    overlayText.innerHTML = htmlContent;
+    startButton.style.display = "none";
+}
+
+window.selectStoryAndStart = function(index) {
+    currentStoryIndex = index;
+    activeStory = stories[currentStoryIndex];
+    startButton.style.display = "inline-block";
+    startGame();
+};
 
 /* =========================
    INIZIO PARTITA
 ========================= */
 
 function startGame() {
-
     clearInterval(gameLoop);
 
     snake = [
@@ -498,14 +984,23 @@ function startGame() {
 
     score = 0;
     completedWordsCount = 0;
-    currentWordIndex = 0;
-    currentLetterIndex = 0;
+    storyWordIndex = 0;
     level = 1;
+
+    const t = translations[currentLanguage];
+    if (gameMode === "adolescente") {
+        if (!activeStory) activeStory = stories[0];
+        wordLabel.textContent = t.storyProgressLabel(activeStory.title[currentLanguage]);
+        updateWordDisplayStory();
+    } else {
+        wordLabel.textContent = t.wordToCompose;
+        setupNewPoppanteWord();
+    }
 
     isPaused = false;
     gameRunning = true;
 
-    setupWord();
+    setupGameRound();
     updateInfo();
 
     overlay.classList.add("hidden");
@@ -515,143 +1010,120 @@ function startGame() {
 }
 
 /* =========================
-   PAROLA
+   GESTIONE ROUND / SPAWN
 ========================= */
 
-function setupWord() {
-
-    targetWord =
-        wordList[currentWordIndex % wordList.length];
-
-    currentLetterIndex = 0;
-
-    updateWordDisplay();
-    spawnLetters();
+function setupGameRound() {
+    if (gameMode === "adolescente") {
+        setupStoryRound();
+    } else {
+        setupPoppanteRound();
+    }
 }
 
-function updateWordDisplay() {
+function setupNewPoppanteWord() {
+    const list = getCombinedWordList();
+    targetWord = list[Math.floor(Math.random() * list.length)];
+    currentLetterIndex = 0;
+    updateWordDisplayPoppante();
+}
 
-    let display = "";
-
+function updateWordDisplayPoppante() {
+    let displayText = "";
     for (let i = 0; i < targetWord.length; i++) {
-
         if (i < currentLetterIndex) {
-
-            display += targetWord[i];
-
+            displayText += targetWord[i] + " ";
         } else {
-
-            display += "_";
-        }
-
-        if (i < targetWord.length - 1) {
-            display += " ";
+            displayText += "_ ";
         }
     }
-
-    wordDisplay.textContent = display;
+    wordDisplay.textContent = displayText.trim();
 }
 
-/* =========================
-   GENERAZIONE LETTERE
-========================= */
+function setupPoppanteRound() {
+    activeItems = [];
+    
+    if (currentLetterIndex < targetWord.length) {
+        const correctChar = targetWord[currentLetterIndex];
+        const pos = getRandomFreePosition();
+        activeItems.push({
+            text: correctChar,
+            x: pos.x,
+            y: pos.y,
+            type: 'letter',
+            isCorrect: true
+        });
+    }
 
-function spawnLetters() {
+    const alphabet = vocabularies[currentLanguage].alphabet;
+    const numDistractors = 3;
+    for (let i = 0; i < numDistractors; i++) {
+        let randChar;
+        let attempts = 0;
+        do {
+            randChar = alphabet[Math.floor(Math.random() * alphabet.length)];
+            attempts++;
+        } while (attempts < 15 && (activeItems.some(item => item.text === randChar) || randChar === targetWord[currentLetterIndex]));
 
-    activeLetters = [];
+        const pos = getRandomFreePosition();
+        activeItems.push({
+            text: randChar,
+            x: pos.x,
+            y: pos.y,
+            type: 'letter',
+            isCorrect: false
+        });
+    }
+}
 
-    const correctLetter =
-        targetWord[currentLetterIndex];
+function setupStoryRound() {
+    activeItems = [];
+    const correctWord = activeStory.words[currentLanguage][storyWordIndex];
+    const correctPos = getRandomFreePosition();
 
-    /*
-       Lettera corretta
-    */
-
-    const correctPos =
-        getRandomFreePosition();
-
-    activeLetters.push({
-        char: correctLetter,
+    activeItems.push({
+        text: correctWord,
         x: correctPos.x,
         y: correctPos.y,
+        type: 'word',
         isCorrect: true
     });
 
-    /*
-       Distrattori
-    */
-
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    const numDistractors =
-        level >= 4 ? 3 : 2;
-
+    const list = getCombinedWordList();
+    const numDistractors = 3;
     for (let i = 0; i < numDistractors; i++) {
-
-        let randomChar;
-
+        let randWord;
         do {
+            randWord = list[Math.floor(Math.random() * list.length)];
+        } while (randWord === correctWord || activeItems.some(item => item.text === randWord));
 
-            randomChar =
-                alphabet[
-                    Math.floor(
-                        Math.random() * alphabet.length
-                    )
-                ];
-
-        } while (randomChar === correctLetter);
-
-        const pos =
-            getRandomFreePosition();
-
-        activeLetters.push({
-            char: randomChar,
+        const pos = getRandomFreePosition();
+        activeItems.push({
+            text: randWord,
             x: pos.x,
             y: pos.y,
+            type: 'word',
             isCorrect: false
         });
     }
 }
 
 function getRandomFreePosition() {
-
     let pos;
     let collision;
 
     do {
-
         collision = false;
-
         pos = {
-            x: Math.floor(Math.random() * gridSize),
-            y: Math.floor(Math.random() * gridSize)
+            x: Math.floor(Math.random() * (gridSize - 2)) + 1,
+            y: Math.floor(Math.random() * (gridSize - 2)) + 1
         };
 
-        /*
-           Evita lo snake
-        */
-
-        if (
-            snake.some(
-                part =>
-                    part.x === pos.x &&
-                    part.y === pos.y
-            )
-        ) {
+        if (snake.some(part => part.x === pos.x && part.y === pos.y)) {
             collision = true;
         }
 
-        /*
-           Evita altre lettere
-        */
-
-        if (
-            activeLetters.some(
-                letter =>
-                    letter.x === pos.x &&
-                    letter.y === pos.y
-            )
-        ) {
+        if (activeItems.some(item => item.x === pos.x && item.y === pos.y)) {
             collision = true;
         }
 
@@ -665,30 +1137,17 @@ function getRandomFreePosition() {
 ========================= */
 
 function startLoop() {
-
     clearInterval(gameLoop);
-
-    gameLoop = setInterval(
-        updateGame,
-        getGameSpeed()
-    );
+    gameLoop = setInterval(updateGame, getGameSpeed());
 }
 
 function restartLoopForLevel() {
-
     clearInterval(gameLoop);
-
-    gameLoop = setInterval(
-        updateGame,
-        getGameSpeed()
-    );
+    gameLoop = setInterval(updateGame, getGameSpeed());
 }
 
 function updateGame() {
-
-    if (!gameRunning || isPaused) {
-        return;
-    }
+    if (!gameRunning || isPaused) return;
 
     direction = nextDirection;
 
@@ -698,103 +1157,91 @@ function updateGame() {
     };
 
     if (checkCollision(head)) {
-
-        endGame(
-            "La tua penna ha incontrato un ostacolo!"
-        );
-
+        const t = translations[currentLanguage];
+        if (gameMode === "poppante") {
+            endGamePoppante(t.poppanteGameOver);
+        } else {
+            endGame(t.adolescenteGameOver);
+        }
         return;
     }
 
     snake.unshift(head);
 
-    /*
-       Controllo lettere
-    */
-
-    const eatenIndex =
-        activeLetters.findIndex(
-            letter =>
-                letter.x === head.x &&
-                letter.y === head.y
-        );
+    const eatenIndex = activeItems.findIndex(
+        item => item.x === head.x && item.y === head.y
+    );
 
     if (eatenIndex !== -1) {
+        const eaten = activeItems[eatenIndex];
 
-        const eaten =
-            activeLetters[eatenIndex];
+        if (gameMode === "poppante") {
+            activeItems.splice(eatenIndex, 1);
 
-        /*
-           LETTERA CORRETTA
-        */
+            const expectedChar = targetWord[currentLetterIndex];
 
-        if (eaten.isCorrect) {
-
-            score += 10;
-
-            currentLetterIndex++;
-
-            /*
-               Parola completata
-            */
-
-            if (
-                currentLetterIndex >=
-                targetWord.length
-            ) {
-
-                score += 50;
-                completedWordsCount++;
-
-                /*
-                   Ogni due parole aumenta il livello.
-                */
-
-                level =
-                    Math.floor(
-                        completedWordsCount / 2
-                    ) + 1;
-
-                currentWordIndex++;
-
+            if (eaten.text === expectedChar) {
+                score += 15;
+                currentLetterIndex++;
+                updateWordDisplayPoppante();
                 showWordCompleted();
 
-                setupWord();
+                if (currentLetterIndex >= targetWord.length) {
+                    score += 100;
+                    completedWordsCount++;
+                    level = Math.floor(completedWordsCount / 3) + 1;
+                    showStoryCompleted();
+                    setupNewPoppanteWord();
+                }
 
+                setupPoppanteRound();
                 restartLoopForLevel();
-
             } else {
-
-                updateWordDisplay();
-                spawnLetters();
+                score = Math.max(0, score - 1);
+                snake.length = Math.max(1, snake.length - 2);
+                showWrongLetterEffect();
+                setupPoppanteRound();
             }
+        } else {
+            activeItems.splice(eatenIndex, 1);
 
-        }
-
-        /*
-           LETTERA SBAGLIATA
-        */
-
-        else {
-
-            endGame(
-                `Hai catturato la lettera sbagliata
-                "<strong>${eaten.char}</strong>"!<br>
-                Serviva "<strong>${targetWord[currentLetterIndex]}</strong>".`
-            );
-
-            return;
+            if (eaten.isCorrect) {
+                score += 25;
+                snake.pop(); // Rimuoviamo il pop provvisorio dell'unift iniziale così otteniamo +4 segmenti netti reali
+                for(let i=0; i<4; i++) {
+                    const last = snake[snake.length - 1];
+                    snake.push({...last});
+                }
+                
+                storyWordIndex++;
+                
+                if (storyWordIndex >= activeStory.words[currentLanguage].length) {
+                    score += 150;
+                    completedWordsCount++;
+                    level = Math.floor(completedWordsCount / 2) + 1;
+                    showStoryCompleted();
+                    endStoryCompleted();
+                    return;
+                } else {
+                    showWordCompleted();
+                    updateWordDisplayStory();
+                    setupStoryRound();
+                    restartLoopForLevel();
+                }
+            } else {
+                for(let i=0; i<4; i++) {
+                    if (snake.length > 1) {
+                        snake.pop();
+                    }
+                }
+                showWrongLetterEffect();
+                setupStoryRound();
+            }
         }
 
         updateInfo();
 
     } else {
-
-        /*
-           Se non mangia nulla,
-           la coda avanza normalmente.
-        */
-
         snake.pop();
     }
 
@@ -806,249 +1253,171 @@ function updateGame() {
 ========================= */
 
 function checkCollision(head) {
-
-    /*
-       Muri
-    */
-
-    if (
-        head.x < 0 ||
-        head.x >= gridSize ||
-        head.y < 0 ||
-        head.y >= gridSize
-    ) {
+    if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
         return true;
     }
-
-    /*
-       Corpo
-    */
-
     for (let part of snake) {
-
-        if (
-            head.x === part.x &&
-            head.y === part.y
-        ) {
+        if (head.x === part.x && head.y === part.y) {
             return true;
         }
     }
-
     return false;
 }
 
 /* =========================
-   DISEGNO
+   DISEGNO CANVAS & RAGNATELE
 ========================= */
 
 function draw() {
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground();
-    drawLetters();
+    drawItems();
     drawSnake();
 }
 
-/* =========================
-   SFONDO PAGINA
-========================= */
+function drawCobweb(startX, startY, corner) {
+    ctx.strokeStyle = "rgba(90, 58, 43, 0.16)";
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    if (corner === 'tl') {
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + 45, startY);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX, startY + 45);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + 32, startY + 32);
+
+        ctx.moveTo(startX + 18, startY); ctx.quadraticCurveTo(startX + 18, startY + 18, startX, startY + 18);
+        ctx.moveTo(startX + 32, startY); ctx.quadraticCurveTo(startX + 28, startY + 28, startX, startY + 32);
+    } else if (corner === 'tr') {
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX - 45, startY);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX, startY + 45);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX - 32, startY + 32);
+
+        ctx.moveTo(startX - 18, startY); ctx.quadraticCurveTo(startX - 18, startY + 18, startX, startY + 18);
+        ctx.moveTo(startX - 32, startY); ctx.quadraticCurveTo(startX - 28, startY + 28, startX, startY + 32);
+    } else if (corner === 'bl') {
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + 45, startY);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX, startY - 45);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + 32, startY - 32);
+
+        ctx.moveTo(startX + 18, startY); ctx.quadraticCurveTo(startX + 18, startY - 18, startX, startY - 18);
+        ctx.moveTo(startX + 32, startY); ctx.quadraticCurveTo(startX + 28, startY - 28, startX, startY - 32);
+    } else if (corner === 'br') {
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX - 45, startY);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX, startY - 45);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX - 32, startY - 32);
+
+        ctx.moveTo(startX - 18, startY); ctx.quadraticCurveTo(startX - 18, startY - 18, startX, startY - 18);
+        ctx.moveTo(startX - 32, startY); ctx.quadraticCurveTo(startX - 28, startY - 28, startX, startY - 32);
+    }
+    ctx.stroke();
+}
 
 function drawBackground() {
-
-    /*
-       Carta
-    */
-
     ctx.fillStyle = "#fffaf1";
-
-    ctx.fillRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-    /*
-       Leggera trama da carta
-    */
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let y = 0; y < canvas.height; y += 5) {
-
-        ctx.strokeStyle =
-            "rgba(150,110,75,0.025)";
-
+        ctx.strokeStyle = "rgba(150,110,75,0.025)";
         ctx.lineWidth = 1;
-
         ctx.beginPath();
-
         ctx.moveTo(0, y);
         ctx.lineTo(canvas.width, y);
-
         ctx.stroke();
     }
 
-    /*
-       Griglia molto più discreta
-    */
-
-    ctx.strokeStyle =
-        "rgba(121,92,70,0.075)";
-
+    ctx.strokeStyle = "rgba(121,92,70,0.075)";
     ctx.lineWidth = 1;
 
     for (let i = 0; i <= gridSize; i++) {
-
         ctx.beginPath();
-
-        ctx.moveTo(
-            i * tileSize,
-            0
-        );
-
-        ctx.lineTo(
-            i * tileSize,
-            canvas.height
-        );
-
+        ctx.moveTo(i * tileSize, 0);
+        ctx.lineTo(i * tileSize, canvas.height);
         ctx.stroke();
 
         ctx.beginPath();
-
-        ctx.moveTo(
-            0,
-            i * tileSize
-        );
-
-        ctx.lineTo(
-            canvas.width,
-            i * tileSize
-        );
-
+        ctx.moveTo(0, i * tileSize);
+        ctx.lineTo(canvas.width, i * tileSize);
         ctx.stroke();
     }
 
-    /*
-       Piccoli elementi decorativi
-    */
+    drawCobweb(0, 0, 'tl');
+    drawCobweb(canvas.width, 0, 'tr');
+    drawCobweb(0, canvas.height, 'bl');
+    drawCobweb(canvas.width, canvas.height, 'br');
 
-    ctx.fillStyle =
-        "rgba(120,88,65,.12)";
+    ctx.strokeStyle = "rgba(90, 58, 43, 0.12)";
+    ctx.beginPath();
+    ctx.moveTo(canvas.width * 0.5, 0); ctx.lineTo(canvas.width * 0.5 - 15, 20);
+    ctx.moveTo(canvas.width * 0.5, 0); ctx.lineTo(canvas.width * 0.5 + 15, 20);
+    ctx.moveTo(canvas.width * 0.5 - 10, 10); ctx.lineTo(canvas.width * 0.5 + 10, 10);
+    ctx.stroke();
 
-    ctx.font = "12px Georgia";
+    ctx.fillStyle = "rgba(217,119,36,.2)";
+    ctx.font = "15px Georgia";
     ctx.textAlign = "center";
-
-    ctx.fillText(
-        "✦",
-        10,
-        14
-    );
-
-    ctx.fillText(
-        "✦",
-        canvas.width - 10,
-        canvas.height - 6
-    );
+    ctx.fillText("🎃", 22, 28);
+    ctx.fillText("🦇", canvas.width - 24, canvas.height - 18);
+    ctx.fillText("🕸️", 25, canvas.height - 22);
+    ctx.fillText("🕷️", canvas.width - 26, 32);
 }
 
 /* =========================
-   LETTERE
+   DISEGNO ELEMENTI (LETTERE / PAROLE)
 ========================= */
 
-function drawLetters() {
+function drawItems() {
+    activeItems.forEach(item => {
+        const x = item.x * tileSize + tileSize / 2;
+        const y = item.y * tileSize + tileSize / 2;
 
-    activeLetters.forEach(item => {
+        let boxWidth, boxHeight;
+        if (gameMode === "poppante") {
+            boxWidth = tileSize * 0.85;
+            boxHeight = tileSize * 0.85;
+        } else {
+            const maxBoxWidth = tileSize * 2.8;
+            const minBoxWidth = tileSize * 0.9;
+            const calculatedWidth = item.text.length * 9.5 + 12;
+            boxWidth = Math.max(minBoxWidth, Math.min(maxBoxWidth, calculatedWidth));
+            boxHeight = tileSize * 0.74;
+        }
 
-        const x =
-            item.x * tileSize +
-            tileSize / 2;
+        const left = Math.max(2, Math.min(canvas.width - boxWidth - 2, x - boxWidth / 2));
+        const top = Math.max(2, Math.min(canvas.height - boxHeight - 2, y - boxHeight / 2));
 
-        const y =
-            item.y * tileSize +
-            tileSize / 2;
-
-        const boxSize =
-            tileSize * 0.74;
-
-        const left =
-            x - boxSize / 2;
-
-        const top =
-            y - boxSize / 2;
-
-        /*
-           Ombra
-        */
-
-        ctx.fillStyle =
-            "rgba(70,45,30,.10)";
-
+        ctx.fillStyle = "rgba(70,45,30,.12)";
         ctx.beginPath();
-
-        ctx.roundRect(
-            left + 1,
-            top + 2,
-            boxSize,
-            boxSize,
-            5
-        );
-
+        ctx.roundRect(left + 1, top + 2, boxWidth, boxHeight, 5);
         ctx.fill();
 
-        /*
-           Tessera
-        */
-
-        ctx.fillStyle =
-            item.isCorrect
-                ? "#f8e8c9"
-                : "#f1e7dc";
-
-        ctx.strokeStyle =
-            item.isCorrect
-                ? "#c9a86d"
-                : "#cbbbae";
-
-        ctx.lineWidth = 1.2;
+        ctx.fillStyle = item.isCorrect && gameMode === "adolescente" ? "#f8e8c9" : "#f1e7dc";
+        ctx.strokeStyle = item.isCorrect && gameMode === "adolescente" ? "#d97724" : "#cbbbae";
+        ctx.lineWidth = item.isCorrect && gameMode === "adolescente" ? 1.5 : 1.2;
 
         ctx.beginPath();
-
-        ctx.roundRect(
-            left,
-            top,
-            boxSize,
-            boxSize,
-            5
-        );
-
+        ctx.roundRect(left, top, boxWidth, boxHeight, 5);
         ctx.fill();
         ctx.stroke();
 
-        /*
-           Lettera
-        */
-
-        ctx.fillStyle =
-            item.isCorrect
-                ? "#51372b"
-                : "#806e63";
-
-        ctx.font =
-            `bold ${tileSize * .62}px Georgia`;
-
+        ctx.fillStyle = gameMode === "poppante" ? "#3d2921" : (item.isCorrect ? "#51372b" : "#806e63");
+        const fontSize = gameMode === "poppante" ? tileSize * 0.5 : Math.max(9, Math.min(tileSize * 0.45, (boxWidth - 6) / (item.text.length * 0.65)));
+        ctx.font = `bold ${fontSize}px Georgia`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        ctx.fillText(
-            item.char,
-            x,
-            y + 1
-        );
+        ctx.fillText(item.text, left + boxWidth / 2, top + boxHeight / 2 + 1);
     });
 }
 
@@ -1057,296 +1426,185 @@ function drawLetters() {
 ========================= */
 
 function drawSnake() {
-
     snake.forEach((part, index) => {
-
-        const x =
-            part.x * tileSize;
-
-        const y =
-            part.y * tileSize;
-
+        const x = part.x * tileSize;
+        const y = part.y * tileSize;
         const padding = 2;
 
-        /*
-           Corpo
-        */
-
         if (index !== 0) {
+            const bodyGradient = ctx.createLinearGradient(x, y, x + tileSize, y + tileSize);
+            bodyGradient.addColorStop(0, "#a9b59b");
+            bodyGradient.addColorStop(1, "#7f9478");
 
-            const bodyGradient =
-                ctx.createLinearGradient(
-                    x,
-                    y,
-                    x + tileSize,
-                    y + tileSize
-                );
-
-            bodyGradient.addColorStop(
-                0,
-                "#a9b59b"
-            );
-
-            bodyGradient.addColorStop(
-                1,
-                "#7f9478"
-            );
-
-            ctx.fillStyle =
-                bodyGradient;
-
+            ctx.fillStyle = bodyGradient;
             ctx.beginPath();
-
-            ctx.roundRect(
-                x + padding,
-                y + padding,
-                tileSize - padding * 2,
-                tileSize - padding * 2,
-                6
-            );
-
+            ctx.roundRect(x + padding, y + padding, tileSize - padding * 2, tileSize - padding * 2, 6);
             ctx.fill();
 
-                        /*
-               Piccolo punto decorativo
-            */
-
-            ctx.fillStyle =
-                "rgba(255,255,255,.35)";
-
+            ctx.fillStyle = "rgba(255,255,255,.35)";
             ctx.beginPath();
-
-            ctx.arc(
-                x + tileSize * .32,
-                y + tileSize * .32,
-                1.5,
-                0,
-                Math.PI * 2
-            );
-
+            ctx.arc(x + tileSize * .32, y + tileSize * .32, 1.5, 0, Math.PI * 2);
             ctx.fill();
-
             return;
         }
 
-        /*
-           TESTA
-        */
+        const headGradient = ctx.createLinearGradient(x, y, x + tileSize, y + tileSize);
+        headGradient.addColorStop(0, "#804e38");
+        headGradient.addColorStop(1, "#493127");
 
-        const headGradient =
-            ctx.createLinearGradient(
-                x,
-                y,
-                x + tileSize,
-                y + tileSize
-            );
-
-        headGradient.addColorStop(
-            0,
-            "#735142"
-        );
-
-        headGradient.addColorStop(
-            1,
-            "#493127"
-        );
-
-        ctx.fillStyle =
-            headGradient;
-
+        ctx.fillStyle = headGradient;
         ctx.beginPath();
-
-        ctx.roundRect(
-            x + 1,
-            y + 1,
-            tileSize - 2,
-            tileSize - 2,
-            7
-        );
-
+        ctx.roundRect(x + 1, y + 1, tileSize - 2, tileSize - 2, 7);
         ctx.fill();
 
-        /*
-           Occhi
-        */
-
-        drawSnakeEyes(
-            x,
-            y
-        );
+        drawSnakeEyes(x, y);
     });
 }
 
 function drawSnakeEyes(x, y) {
-
-    let eye1;
-    let eye2;
-
-    const centerX =
-        x + tileSize / 2;
-
-    const centerY =
-        y + tileSize / 2;
-
+    let eye1, eye2;
+    const centerX = x + tileSize / 2;
+    const centerY = y + tileSize / 2;
     const eyeOffset = 4;
 
     if (direction.x === 1) {
-
-        eye1 = {
-            x: centerX + 4,
-            y: centerY - eyeOffset
-        };
-
-        eye2 = {
-            x: centerX + 4,
-            y: centerY + eyeOffset
-        };
-
+        eye1 = {x: centerX + 4, y: centerY - eyeOffset};
+        eye2 = {x: centerX + 4, y: centerY + eyeOffset};
     } else if (direction.x === -1) {
-
-        eye1 = {
-            x: centerX - 4,
-            y: centerY - eyeOffset
-        };
-
-        eye2 = {
-            x: centerX - 4,
-            y: centerY + eyeOffset
-        };
-
+        eye1 = {x: centerX - 4, y: centerY - eyeOffset};
+        eye2 = {x: centerX - 4, y: centerY + eyeOffset};
     } else if (direction.y === -1) {
-
-        eye1 = {
-            x: centerX - eyeOffset,
-            y: centerY - 4
-        };
-
-        eye2 = {
-            x: centerX + eyeOffset,
-            y: centerY - 4
-        };
-
+        eye1 = {x: centerX - eyeOffset, y: centerY - 4};
+        eye2 = {x: centerX + eyeOffset, y: centerY - 4};
     } else {
-
-        eye1 = {
-            x: centerX - eyeOffset,
-            y: centerY + 4
-        };
-
-        eye2 = {
-            x: centerX + eyeOffset,
-            y: centerY + 4
-        };
+        eye1 = {x: centerX - eyeOffset, y: centerY + 4};
+        eye2 = {x: centerX + eyeOffset, y: centerY + 4};
     }
 
     [eye1, eye2].forEach(eye => {
-
         ctx.fillStyle = "#fffdf7";
-
         ctx.beginPath();
-
-        ctx.arc(
-            eye.x,
-            eye.y,
-            2.2,
-            0,
-            Math.PI * 2
-        );
-
+        ctx.arc(eye.x, eye.y, 2.2, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = "#3d2921";
-
+        ctx.fillStyle = "#d97724";
         ctx.beginPath();
-
-        ctx.arc(
-            eye.x,
-            eye.y,
-            .9,
-            0,
-            Math.PI * 2
-        );
-
+        ctx.arc(eye.x, eye.y, 1, 0, Math.PI * 2);
         ctx.fill();
     });
 }
 
 /* =========================
-   PAROLA COMPLETATA
+   GESTIONE VISUALIZZAZIONE STORIA / PAROLE
+========================= */
+
+function updateWordDisplayStory() {
+    let displayedText = "";
+    for (let i = 0; i < storyWordIndex; i++) {
+        displayedText += activeStory.words[currentLanguage][i] + " ";
+    }
+    wordDisplay.textContent = displayedText.trim() || translations[currentLanguage].storyWaitPrompt;
+}
+
+/* =========================
+   EFFETTI COMPLETAMENTO
 ========================= */
 
 function showWordCompleted() {
-
-    /*
-       Non blocchiamo la partita:
-       mostriamo solo per un attimo
-       un piccolo effetto sulla parola.
-    */
-
-    wordDisplay.style.transform =
-        "scale(1.08)";
-
-    wordDisplay.style.color =
-        "#a07836";
-
+    wordDisplay.style.transform = "scale(1.05)";
+    wordDisplay.style.color = "#d97724";
     setTimeout(() => {
-
-        wordDisplay.style.transform =
-            "scale(1)";
-
-        wordDisplay.style.color =
-            "";
-
+        wordDisplay.style.transform = "scale(1)";
+        wordDisplay.style.color = "";
     }, 350);
+}
+
+function showWrongLetterEffect() {
+    wordDisplay.style.transform = "scale(0.95)";
+    wordDisplay.style.color = "#c98f87";
+    setTimeout(() => {
+        wordDisplay.style.transform = "scale(1)";
+        wordDisplay.style.color = "";
+    }, 350);
+}
+
+function showStoryCompleted() {
+    wordDisplay.style.transform = "scale(1.05)";
+    wordDisplay.style.color = "#d97724";
+    setTimeout(() => {
+        wordDisplay.style.transform = "scale(1)";
+        wordDisplay.style.color = "";
+    }, 500);
+}
+
+function endStoryCompleted() {
+    gameRunning = false;
+    isPaused = false;
+    clearInterval(gameLoop);
+
+    if (score > highscore) {
+        highscore = score;
+        localStorage.setItem("snakeLetterarioHalloweenHighscore", highscore);
+    }
+
+    updateInfo();
+
+    const t = translations[currentLanguage];
+    overlayTitle.textContent = t.storyCompletedTitle;
+    overlayText.innerHTML = t.storyCompletedMsg(activeStory.title[currentLanguage], score, highscore);
+    overlayText.innerHTML += `
+        <div style="margin-top: 14px; display: flex; gap: 8px; justify-content: center;">
+            <button onclick="startGame()" style="padding: 8px 14px; font-size: 0.85rem;">${t.replayStoryBtn}</button>
+            <button onclick="showStorySelectionScreen(); activeStory = null;" style="padding: 8px 14px; font-size: 0.85rem; background: rgba(255,250,241,.95); color: var(--brown); border: 1px solid #d9c5aa;">${t.storySelectBtn}</button>
+        </div>
+    `;
+    startButton.style.display = "none";
+    overlay.classList.remove("hidden");
 }
 
 /* =========================
    FINE PARTITA
 ========================= */
 
-function endGame(reason) {
-
+function endGamePoppante(reason) {
     gameRunning = false;
-
     isPaused = false;
-
     clearInterval(gameLoop);
 
-    /*
-       Record
-    */
-
     if (score > highscore) {
-
         highscore = score;
-
-        localStorage.setItem(
-            "snakeLetterarioHighscore",
-            highscore
-        );
+        localStorage.setItem("snakeLetterarioHalloweenHighscore", highscore);
     }
 
     updateInfo();
 
-    overlayTitle.textContent =
-        "📖 La storia si è interrotta...";
+    const t = translations[currentLanguage];
+    overlayTitle.textContent = reason;
+    overlayText.innerHTML = t.poppanteStats(score, completedWordsCount, level);
 
-    overlayText.innerHTML = `
-        ${reason}
-        <br><br>
+    startButton.textContent = t.restartPoppante;
+    startButton.style.display = "inline-block";
+    overlay.classList.remove("hidden");
+}
 
-        <span class="small-result">
-            Punteggio: <strong>${score}</strong>
-            &nbsp; · &nbsp;
-            Parole: <strong>${completedWordsCount}</strong>
-            &nbsp; · &nbsp;
-            Livello: <strong>${level}</strong>
-        </span>
-    `;
+function endGame(reason) {
+    gameRunning = false;
+    isPaused = false;
+    clearInterval(gameLoop);
 
-    startButton.textContent =
-        "↻ Ricomincia il racconto";
+    if (score > highscore) {
+        highscore = score;
+        localStorage.setItem("snakeLetterarioHalloweenHighscore", highscore);
+    }
 
+    updateInfo();
+
+    const t = translations[currentLanguage];
+    overlayTitle.textContent = reason;
+    overlayText.innerHTML = t.adolescenteStats(score, completedWordsCount, level);
+
+    startButton.textContent = t.restartAdolescente;
+    startButton.style.display = "inline-block";
     overlay.classList.remove("hidden");
 }
 
@@ -1355,28 +1613,17 @@ function endGame(reason) {
 ========================= */
 
 function togglePause() {
-
-    if (!gameRunning) {
-        return;
-    }
-
+    if (!gameRunning) return;
     isPaused = !isPaused;
 
+    const t = translations[currentLanguage];
     if (isPaused) {
-
-        overlayTitle.textContent =
-            "⏸️ Pagina in pausa";
-
-        overlayText.textContent =
-            "Il racconto è momentaneamente sospeso.\n\nPremi il pulsante per continuare.";
-
-        startButton.textContent =
-            "▶ Riprendi";
-
+        overlayTitle.textContent = t.pauseTitle;
+        overlayText.innerHTML = t.pauseText;
+        startButton.textContent = t.resumeBtn;
+        startButton.style.display = "inline-block";
         overlay.classList.remove("hidden");
-
     } else {
-
         overlay.classList.add("hidden");
     }
 }
@@ -1386,212 +1633,89 @@ function togglePause() {
 ========================= */
 
 function updateInfo() {
-
-    scoreElement.textContent =
-        score;
-
-    completedWordsElement.textContent =
-        completedWordsCount;
-
-    highscoreElement.textContent =
-        highscore;
-
-    levelElement.textContent =
-        level;
+    scoreElement.textContent = score;
+    completedWordsElement.textContent = completedWordsCount;
+    highscoreElement.textContent = highscore;
+    levelElement.textContent = level;
 }
 
 /* =========================
-   CONTROLLI
+   CONTROLLI NOKIA 3310 (SEQUENZA: RIGHT -> UP -> LEFT -> DOWN -> RIGHT)
 ========================= */
 
+function rotateSnake() {
+    if (!gameRunning || isPaused) return;
+
+    const sequence = [
+        {x: 1, y: 0},   // Right
+        {x: 0, y: -1},  // Up
+        {x: -1, y: 0},  // Left
+        {x: 0, y: 1}    // Down
+    ];
+
+    let currIdx = sequence.findIndex(d => d.x === nextDirection.x && d.y === nextDirection.y);
+    if (currIdx === -1) currIdx = 0;
+
+    let nextIdx = (currIdx + 1) % sequence.length;
+    nextDirection = sequence[nextIdx];
+}
+
 function changeDirection(newDir) {
+    if (!gameRunning || isPaused) return;
 
-    if (!gameRunning || isPaused) {
+    if (direction.x === -newDir.x && direction.y === -newDir.y) {
         return;
     }
-
-    /*
-       Impedisce inversioni immediate
-       di 180°.
-    */
-
-    if (
-        direction.x === -newDir.x &&
-        direction.y === -newDir.y
-    ) {
-        return;
-    }
-
     nextDirection = newDir;
 }
 
 /* =========================
-   TASTIERA
+   TASTIERA PC
 ========================= */
 
-document.addEventListener(
-    "keydown",
-    function(e) {
+document.addEventListener("keydown", function(e) {
+    const key = e.key.toLowerCase();
 
-        const key =
-            e.key.toLowerCase();
-
-        if (
-            key === "arrowup" ||
-            key === "w"
-        ) {
-
-            e.preventDefault();
-
-            changeDirection({
-                x: 0,
-                y: -1
-            });
-        }
-
-        if (
-            key === "arrowdown" ||
-            key === "s"
-        ) {
-
-            e.preventDefault();
-
-            changeDirection({
-                x: 0,
-                y: 1
-            });
-        }
-
-        if (
-            key === "arrowleft" ||
-            key === "a"
-        ) {
-
-            e.preventDefault();
-
-            changeDirection({
-                x: -1,
-                y: 0
-            });
-        }
-
-        if (
-            key === "arrowright" ||
-            key === "d"
-        ) {
-
-            e.preventDefault();
-
-            changeDirection({
-                x: 1,
-                y: 0
-            });
-        }
-
-        if (
-            key === "p" ||
-            key === " "
-        ) {
-
-            e.preventDefault();
-
-            togglePause();
-        }
-
-        /*
-           R = nuova partita
-        */
-
-        if (
-            key === "r" &&
-            !gameRunning
-        ) {
-
-            startGame();
-        }
+    if (key === "arrowup" || key === "w") {
+        e.preventDefault();
+        changeDirection({x: 0, y: -1});
     }
-);
-
-/* =========================
-   CONTROLLI TOUCH
-========================= */
-
-document
-    .querySelectorAll(
-        ".controls button[data-direction]"
-    )
-    .forEach(btn => {
-
-        btn.addEventListener(
-            "click",
-            function() {
-
-                const d =
-                    this.dataset.direction;
-
-                if (d === "up") {
-
-                    changeDirection({
-                        x: 0,
-                        y: -1
-                    });
-
-                } else if (d === "down") {
-
-                    changeDirection({
-                        x: 0,
-                        y: 1
-                    });
-
-                } else if (d === "left") {
-
-                    changeDirection({
-                        x: -1,
-                        y: 0
-                    });
-
-                } else if (d === "right") {
-
-                    changeDirection({
-                        x: 1,
-                        y: 0
-                    });
-                }
-            }
-        );
-    });
-
-/* =========================
-   PULSANTE PRINCIPALE
-========================= */
-
-startButton.addEventListener(
-    "click",
-    function() {
-
-        /*
-           Se siamo in pausa,
-           riprendiamo.
-
-           In qualsiasi altro caso
-           creiamo una partita completamente nuova.
-        */
-
-        if (isPaused) {
-
-            togglePause();
-
+    if (key === "arrowdown" || key === "s") {
+        e.preventDefault();
+        changeDirection({x: 0, y: 1});
+    }
+    if (key === "arrowleft" || key === "a") {
+        e.preventDefault();
+        changeDirection({x: -1, y: 0});
+    }
+    if (key === "arrowright" || key === "d") {
+        e.preventDefault();
+        changeDirection({x: 1, y: 0});
+    }
+    if (key === "p" || key === " ") {
+        e.preventDefault();
+        togglePause();
+    }
+    if (key === "r" && !gameRunning) {
+        if (gameMode === "adolescente" && !activeStory) {
+            showStorySelectionScreen();
         } else {
-
             startGame();
         }
     }
-);
+});
+
+/* =========================
+   PULSANTE PRINCIPALE OVERLAY
+========================= */
+
+startButton.addEventListener("click", handleStartClick);
 
 /* =========================
    DISEGNO INIZIALE
 ========================= */
 
+updateUILanguage();
 draw();
 
 </script>
